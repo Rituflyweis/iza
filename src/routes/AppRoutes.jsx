@@ -44,8 +44,8 @@ const AppRoutes = () => {
         <Route path="/product-management/add-product" element={<AddProductPage />} />
         <Route path="/product-management/detail/:id" element={<ProductDetailPage />} />
         <Route path="/product-management/edit/:id" element={<EditProductPage />} />
-        <Route path="/order-management" element={<OrderManagementPage />} />
-        <Route path="/order-management/detail/:id" element={<OrderDetailPage />} />
+        {/* <Route path="/order-management" element={<OrderManagementPage />} />
+        <Route path="/order-management/detail/:id" element={<OrderDetailPage />} /> */}
         <Route path="/user-detail/:id" element={<UserDetailPage />} />
         <Route path="/user-detail/:id/order-history" element={<UserOrderHistoryPage />} />
         <Route path="/user-detail/:id/wishlist" element={<UserWishlistPage />} />
