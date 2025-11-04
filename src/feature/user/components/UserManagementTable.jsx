@@ -14,11 +14,14 @@ import {
   MenuItem,
   FormControl,
   Typography,
+  Menu,
 } from '@mui/material';
 import { Icon } from '@iconify/react';
+import { useNavigate } from 'react-router-dom';
 
 const UserManagementTable = () => {
   const [page, setPage] = useState(1);
+  const navigate = useNavigate();
   const [roles, setRoles] = useState({});
 
   // Sample data
@@ -43,7 +46,7 @@ const UserManagementTable = () => {
   };
 
   const handleView = (userId) => {
-    console.log(`View user ${userId}`);
+    navigate(`/user-detail/${userId}`);
   };
 
   const handleEdit = (userId) => {
@@ -115,30 +118,11 @@ const UserManagementTable = () => {
                   <TableCell sx={{ py: '1rem', color: '#1A1A1A' }}>{user.joinedDate}</TableCell>
                   <TableCell sx={{ py: '1rem', color: '#1A1A1A' }}>{user.lastLogin}</TableCell>
                   <TableCell sx={{ py: '1rem' }}>
-                    <FormControl size="small" sx={{ minWidth: 150 }}>
-                      <Select
-                        value={currentRole}
-                        onChange={(e) => handleRoleChange(user.id, e.target.value)}
-                        sx={{
-                          fontSize: '0.875rem',
-                          '& .MuiOutlinedInput-notchedOutline': {
-                            border: 'none',
-                          },
-                          '&:hover .MuiOutlinedInput-notchedOutline': {
-                            border: 'none',
-                          },
-                          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                            border: 'none',
-                          },
-                        }}
-                        IconComponent={() => <Icon icon="mdi:chevron-down" width="20" height="20" />}
-                      >
-                        <MenuItem value="Admin">Admin</MenuItem>
-                        <MenuItem value="Order Manager">Order Manager</MenuItem>
-                        <MenuItem value="Support Staff">Support Staff</MenuItem>
-                        <MenuItem value="Inventory Manager">Inventory Manager</MenuItem>
-                      </Select>
-                    </FormControl>
+                    <RoleDropdown
+                      userId={user.id}
+                      currentRole={currentRole}
+                      onRoleChange={(newRole) => handleRoleChange(user.id, newRole)}
+                    />
                   </TableCell>
                   <TableCell sx={{ py: '1rem' }}>
                     <Chip
@@ -271,6 +255,87 @@ const UserManagementTable = () => {
         </Box>
       </Box>
     </Box>
+  );
+};
+
+const RoleDropdown = ({ userId, currentRole, onRoleChange }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleSelect = (role) => {
+    onRoleChange(role);
+    handleClose();
+  };
+
+  const roles = ['Admin', 'Support Staff', 'Inventory Manager', 'Order Manager'];
+
+  return (
+    <>
+      <Box
+        onClick={handleClick}
+        sx={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          cursor: 'pointer',
+          px: '0.75rem',
+          py: '0.5rem',
+          borderRadius: '0.5rem',
+          border: open ? '1px solid #F8069D' : '1px solid transparent',
+          borderBottom: open ? '1px dashed #F8069D' : 'none',
+          '&:hover': {
+            bgcolor: '#F5F5F5',
+          },
+        }}
+      >
+        <Typography sx={{ fontSize: '0.875rem', color: '#1A1A1A' }}>{currentRole}</Typography>
+        <Icon icon="mdi:chevron-down" width="18" height="18" />
+      </Box>
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        PaperProps={{
+          sx: {
+            mt: '0.5rem',
+            minWidth: 200,
+            borderRadius: '0.5rem',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+          },
+        }}
+        transformOrigin={{ horizontal: 'left', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+      >
+        {roles.map((role) => (
+          <MenuItem
+            key={role}
+            onClick={() => handleSelect(role)}
+            selected={role === currentRole}
+            sx={{
+              fontSize: '0.875rem',
+              py: '0.75rem',
+              px: '1rem',
+              '&.Mui-selected': {
+                bgcolor: 'rgba(248, 6, 157, 0.1)',
+                '&:hover': {
+                  bgcolor: 'rgba(248, 6, 157, 0.15)',
+                },
+              },
+            }}
+          >
+            {role}
+          </MenuItem>
+        ))}
+      </Menu>
+    </>
   );
 };
 

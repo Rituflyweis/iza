@@ -38,6 +38,17 @@ const CustomTable = ({
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(defaultRowsPerPage);
 
+  const getNestedValue = (obj, path) => {
+    if (!obj || !path) return undefined;
+    const segments = path.split('.');
+    let current = obj;
+    for (const key of segments) {
+      current = current?.[key];
+      if (current === undefined || current === null) break;
+    }
+    return current;
+  };
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -60,6 +71,27 @@ const CustomTable = ({
           sx={{
             backgroundColor: isActive ? 'rgba(76, 175, 80, 0.1)' : 'rgba(244, 67, 54, 0.1)',
             color: isActive ? 'rgba(76, 175, 80, 1)' : 'rgba(244, 67, 54, 1)',
+            fontWeight: 400,
+            fontSize: '12px',
+          }}
+        />
+      );
+    }
+
+    // Generic chip support
+    if (column.type === 'chip' || column.id === 'tag') {
+      const value =
+        (typeof column.accessor === 'function' && column.accessor(row)) ||
+        (typeof column.accessor === 'string' && getNestedValue(row, column.accessor)) ||
+        (column.path && getNestedValue(row, column.path)) ||
+        (column.id?.includes('.') ? getNestedValue(row, column.id) : row[column.id]);
+      return (
+        <Chip
+          label={value ?? '-'}
+          size="small"
+          sx={{
+            backgroundColor: 'rgba(240, 240, 240, 0.6)',
+            color: '#1A1A1A',
             fontWeight: 400,
             fontSize: '12px',
           }}
@@ -131,7 +163,22 @@ const CustomTable = ({
       );
     }
 
-    return row[column.id] || '-';
+    // Access value via accessor function, dot-path, or id
+    let value =
+      (typeof column.accessor === 'function' && column.accessor(row)) ||
+      (typeof column.accessor === 'string' && getNestedValue(row, column.accessor)) ||
+      (column.path && getNestedValue(row, column.path)) ||
+      (column.id?.includes('.') ? getNestedValue(row, column.id) : row[column.id]);
+
+    if (column.format) {
+      try {
+        value = column.format(value, row);
+      } catch (e) {
+        // ignore format errors and fallback to raw value
+      }
+    }
+
+    return value ?? '-';
   };
 
   return (

@@ -1,10 +1,15 @@
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography, Button, Menu, MenuItem } from '@mui/material';
 import { Icon } from '@iconify/react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const UserManagementHeading = () => {
+  const [exportAnchor, setExportAnchor] = useState(null);
+  const [importAnchor, setImportAnchor] = useState(null);
+  const navigate = useNavigate();
+
   const handleCreate = () => {
-    console.log('Create clicked');
-    // Implement create logic
+    navigate('/create-user');
   };
 
   const handleFilter = () => {
@@ -12,15 +17,36 @@ const UserManagementHeading = () => {
     // Implement filter logic
   };
 
-  const handleImport = () => {
-    console.log('Import clicked');
+  const handleExportClick = (event) => {
+    setExportAnchor(event.currentTarget);
+  };
+
+  const handleExportClose = () => {
+    setExportAnchor(null);
+  };
+
+  const handleExportSelect = (format) => {
+    console.log(`Export as ${format}`);
+    handleExportClose();
+    // Implement export logic
+  };
+
+  const handleImportClick = (event) => {
+    setImportAnchor(event.currentTarget);
+  };
+
+  const handleImportClose = () => {
+    setImportAnchor(null);
+  };
+
+  const handleImportSelect = (format) => {
+    console.log(`Import as ${format}`);
+    handleImportClose();
     // Implement import logic
   };
 
-  const handleExport = () => {
-    console.log('Export clicked');
-    // Implement export logic
-  };
+  const exportOptions = ['CSV', 'PDF', 'Doc', 'Excel'];
+  const importOptions = ['CSV', 'PDF', 'Doc', 'Excel'];
 
   return (
     <Box sx={{ mb: '2rem' }}>
@@ -93,7 +119,7 @@ const UserManagementHeading = () => {
 
           <Button
             variant="contained"
-            onClick={handleImport}
+            onClick={handleImportClick}
             sx={{
               bgcolor: '#F8069D',
               color: '#fff',
@@ -114,7 +140,7 @@ const UserManagementHeading = () => {
 
           <Button
             variant="contained"
-            onClick={handleExport}
+            onClick={handleExportClick}
             sx={{
               bgcolor: '#F8069D',
               color: '#fff',
@@ -134,6 +160,74 @@ const UserManagementHeading = () => {
           </Button>
         </Box>
       </Box>
+
+      {/* Export Menu */}
+      <Menu
+        anchorEl={exportAnchor}
+        open={Boolean(exportAnchor)}
+        onClose={handleExportClose}
+        PaperProps={{
+          sx: {
+            mt: '0.5rem',
+            minWidth: 200,
+            borderRadius: '0.5rem',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+          },
+        }}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+      >
+        {exportOptions.map((option) => (
+          <MenuItem
+            key={option}
+            onClick={() => handleExportSelect(option)}
+            sx={{
+              fontSize: '0.875rem',
+              py: '0.75rem',
+              px: '1rem',
+              '&:hover': {
+                bgcolor: 'rgba(248, 6, 157, 0.1)',
+              },
+            }}
+          >
+            Export as a {option}
+          </MenuItem>
+        ))}
+      </Menu>
+
+      {/* Import Menu */}
+      <Menu
+        anchorEl={importAnchor}
+        open={Boolean(importAnchor)}
+        onClose={handleImportClose}
+        PaperProps={{
+          sx: {
+            mt: '0.5rem',
+            minWidth: 200,
+            borderRadius: '0.5rem',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+          },
+        }}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+      >
+        {importOptions.map((option) => (
+          <MenuItem
+            key={option}
+            onClick={() => handleImportSelect(option)}
+            sx={{
+              fontSize: '0.875rem',
+              py: '0.75rem',
+              px: '1rem',
+              '&:hover': {
+                bgcolor: 'rgba(248, 6, 157, 0.1)',
+              },
+            }}
+          >
+            Import as a {option}
+          </MenuItem>
+        ))}
+      </Menu>
     </Box>
   );
 };
