@@ -50,6 +50,8 @@ const Layout = ({ children }) => {
               borderRadius: '0.75rem',
               p: { xs: '0.75rem', md: '1rem' },
               boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
+              // Ensure the main white card covers the visible screen height
+              minHeight: 'calc(100vh - 3rem)',
             }}
           >
             {/* Header inside the same card */}

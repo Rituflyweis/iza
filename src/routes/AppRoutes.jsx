@@ -24,6 +24,23 @@ import ProductDetailPage from '../pages/ProductDetailPage';
 import EditProductPage from '../pages/EditProductPage';
 import OrderManagementPage from '../pages/OrderManagementPage';
 import OrderDetailPage from '../pages/OrderDetailPage';
+import TransactionManagementPage from '../pages/TransactionManagementPage';
+import VideoManagementPage from '../pages/VideoManagementPage';
+import AddVideoPage from '../pages/AddVideoPage';
+import OffersManagementPage from '../pages/OffersManagementPage';
+import RewardManagementPage from '../pages/RewardManagementPage';
+import NotificationPage from '../pages/NotificationPage';
+import EditNotificationPage from '../pages/EditNotificationPage';
+import AddPushNotificationPage from '../pages/AddPushNotificationPage';
+import AddEmailPage from '../pages/AddEmailPage';
+import AddSmsPage from '../pages/AddSmsPage';
+import AddWhatsappPage from '../pages/AddWhatsappPage';
+import InventoryManagementPage from '../pages/InventoryManagementPage';
+import AddInventoryPage from '../pages/AddInventoryPage';
+import InventoryDetailPage from '../pages/InventoryDetailPage';
+import AddOfferPage from '../pages/AddOfferPage';
+import AlertsPage from '../pages/AlertsPage';
+import AlertSettingsPage from '../pages/AlertSettingsPage';
 
 const AppRoutes = () => {
   return (
@@ -44,8 +61,26 @@ const AppRoutes = () => {
         <Route path="/product-management/add-product" element={<AddProductPage />} />
         <Route path="/product-management/detail/:id" element={<ProductDetailPage />} />
         <Route path="/product-management/edit/:id" element={<EditProductPage />} />
-        {/* <Route path="/order-management" element={<OrderManagementPage />} />
-        <Route path="/order-management/detail/:id" element={<OrderDetailPage />} /> */}
+        <Route path="/order-management" element={<OrderManagementPage />} />
+        <Route path="/order-management/detail/:id" element={<OrderDetailPage />} />
+        <Route path="/transaction-list" element={<TransactionManagementPage />} />
+        <Route path="/video-management" element={<VideoManagementPage />} />
+        <Route path="/video-management/add-video" element={<AddVideoPage />} />
+        {/* <Route path="/offers-management" element={<OffersManagementPage />} />
+        <Route path="/reward-management" element={<RewardManagementPage />} />
+        <Route path="/notification" element={<NotificationPage />} />
+        <Route path="/notification/edit/:id" element={<EditNotificationPage />} />
+        <Route path="/notification/new/push" element={<AddPushNotificationPage />} />
+        <Route path="/notification/new/email" element={<AddEmailPage />} />
+        <Route path="/notification/new/sms" element={<AddSmsPage />} />
+        <Route path="/notification/new/whatsapp" element={<AddWhatsappPage />} />
+        <Route path="/inventory" element={<InventoryManagementPage />} />
+        <Route path="/inventory/add" element={<AddInventoryPage />} />
+        <Route path="/inventory/edit/:id" element={<AddInventoryPage />} />
+        <Route path="/inventory/detail/:id" element={<InventoryDetailPage />} />
+        <Route path="/offers-management/add-offer" element={<AddOfferPage />} />
+        <Route path="/alerts" element={<AlertsPage />} />
+        <Route path="/alerts/settings" element={<AlertSettingsPage />} /> */}
         <Route path="/user-detail/:id" element={<UserDetailPage />} />
         <Route path="/user-detail/:id/order-history" element={<UserOrderHistoryPage />} />
         <Route path="/user-detail/:id/wishlist" element={<UserWishlistPage />} />

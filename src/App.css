@@ -1,0 +1,13 @@
+/* Hide native date picker icon so custom icon shows without black box */
+.date-input::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  display: none;
+}
+
+.date-input {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: transparent;
+}
+
+
