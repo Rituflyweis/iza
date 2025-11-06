@@ -291,3 +291,5 @@ const OffersManagementTable = () => {
 export default OffersManagementTable;
 
 
+
+

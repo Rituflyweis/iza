@@ -41,6 +41,19 @@ import InventoryDetailPage from '../pages/InventoryDetailPage';
 import AddOfferPage from '../pages/AddOfferPage';
 import AlertsPage from '../pages/AlertsPage';
 import AlertSettingsPage from '../pages/AlertSettingsPage';
+import CustomerSupportPage from '../pages/CustomerSupportPage';
+import TicketDetailPage from '../pages/TicketDetailPage';
+import AddFAQPage from '../pages/AddFAQPage';
+import AddContactPage from '../pages/AddContactPage';
+import ThirdPartyIntegrationPage from '../pages/ThirdPartyIntegrationPage';
+import PaymentGatewayPage from '../pages/PaymentGatewayPage';
+import AddPaymentGatewayPage from '../pages/AddPaymentGatewayPage';
+import ConfigurePaymentGatewayPage from '../pages/ConfigurePaymentGatewayPage';
+import ManageSettingsPaymentGatewayPage from '../pages/ManageSettingsPaymentGatewayPage';
+import ShippingProviderPage from '../pages/ShippingProviderPage';
+import AddShippingPage from '../pages/AddShippingPage';
+import ConfigureShippingProviderPage from '../pages/ConfigureShippingProviderPage';
+import TrackOrdersShippingProviderPage from '../pages/TrackOrdersShippingProviderPage';
 
 const AppRoutes = () => {
   return (
@@ -66,7 +79,7 @@ const AppRoutes = () => {
         <Route path="/transaction-list" element={<TransactionManagementPage />} />
         <Route path="/video-management" element={<VideoManagementPage />} />
         <Route path="/video-management/add-video" element={<AddVideoPage />} />
-        {/* <Route path="/offers-management" element={<OffersManagementPage />} />
+        {/* 
         <Route path="/reward-management" element={<RewardManagementPage />} />
         <Route path="/notification" element={<NotificationPage />} />
         <Route path="/notification/edit/:id" element={<EditNotificationPage />} />
@@ -74,13 +87,15 @@ const AppRoutes = () => {
         <Route path="/notification/new/email" element={<AddEmailPage />} />
         <Route path="/notification/new/sms" element={<AddSmsPage />} />
         <Route path="/notification/new/whatsapp" element={<AddWhatsappPage />} />
-        <Route path="/inventory" element={<InventoryManagementPage />} />
+       
+        <Route path="/alerts" element={<AlertsPage />} />
+        <Route path="/alerts/settings" element={<AlertSettingsPage />} /> */}
+        <Route path="/offers-management" element={<OffersManagementPage />} />
+         <Route path="/inventory" element={<InventoryManagementPage />} />
         <Route path="/inventory/add" element={<AddInventoryPage />} />
         <Route path="/inventory/edit/:id" element={<AddInventoryPage />} />
         <Route path="/inventory/detail/:id" element={<InventoryDetailPage />} />
         <Route path="/offers-management/add-offer" element={<AddOfferPage />} />
-        <Route path="/alerts" element={<AlertsPage />} />
-        <Route path="/alerts/settings" element={<AlertSettingsPage />} /> */}
         <Route path="/user-detail/:id" element={<UserDetailPage />} />
         <Route path="/user-detail/:id/order-history" element={<UserOrderHistoryPage />} />
         <Route path="/user-detail/:id/wishlist" element={<UserWishlistPage />} />
@@ -91,6 +106,21 @@ const AppRoutes = () => {
         <Route path="/user-detail/:id/communication/:commId" element={<UserCommunicationDetailPage />} />
         <Route path="/user-detail/:id/loyalty" element={<UserLoyaltyPointsPage />} />
         <Route path="/user-detail/:id/referrals" element={<UserReferralHistoryPage />} />
+        <Route path="/customer-support" element={<CustomerSupportPage />} />
+        <Route path="/customer-support/ticket-detail/:id" element={<TicketDetailPage />} />
+        <Route path="/customer-support/add-faq" element={<AddFAQPage />} />
+        <Route path="/customer-support/edit-faq/:id" element={<AddFAQPage />} />
+        <Route path="/customer-support/add-contact" element={<AddContactPage />} />
+        <Route path="/customer-support/edit-contact/:id" element={<AddContactPage />} />
+        <Route path="/third-party-integration" element={<ThirdPartyIntegrationPage />} />
+        <Route path="/third-party-integration/payment-gateway" element={<PaymentGatewayPage />} />
+        <Route path="/third-party-integration/payment-gateway/add" element={<AddPaymentGatewayPage />} />
+        <Route path="/third-party-integration/payment-gateway/configure/:id" element={<ConfigurePaymentGatewayPage />} />
+        <Route path="/third-party-integration/payment-gateway/manage-settings/:id" element={<ManageSettingsPaymentGatewayPage />} />
+        <Route path="/third-party-integration/shipping-provider" element={<ShippingProviderPage />} />
+        <Route path="/third-party-integration/shipping-provider/add" element={<AddShippingPage />} />
+        <Route path="/third-party-integration/shipping-provider/configure/:id" element={<ConfigureShippingProviderPage />} />
+        <Route path="/third-party-integration/shipping-provider/track-orders/:id" element={<TrackOrdersShippingProviderPage />} />
         
         {/* Add more routes here as you create new features */}
       </Routes>

@@ -57,3 +57,5 @@ const InventoryAlertsTable = () => {
 export default InventoryAlertsTable;
 
 
+
+

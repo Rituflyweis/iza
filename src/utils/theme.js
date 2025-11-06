@@ -74,6 +74,41 @@ const theme = createTheme({
     borderRadius: '0.5rem',
   },
   spacing: 8, // Default spacing unit
+  components: {
+    MuiTabs: {
+      styleOverrides: {
+        root: {
+          '& .MuiTabs-flexContainer': {
+            flexWrap: 'wrap',
+            gap: '0.5rem',
+          },
+          '& .MuiTabs-indicator': {
+            display: 'none',
+          },
+        },
+      },
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+          borderRadius: '0.5rem',
+          marginRight: '0.5rem',
+          paddingLeft: '1rem',
+          paddingRight: '1rem',
+          minHeight: 36,
+          backgroundColor: '#fff',
+          color: '#000',
+          border: '1px solid #E5E7EB',
+          '&.Mui-selected': {
+            backgroundColor: '#000',
+            color: '#fff',
+            border: '1px solid #000',
+          },
+        },
+      },
+    },
+  },
 });
 
 export default theme;

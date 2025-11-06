@@ -12,3 +12,5 @@ const OffersManagementPage = () => {
 export default OffersManagementPage;
 
 
+
+

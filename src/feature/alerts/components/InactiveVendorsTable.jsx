@@ -40,3 +40,5 @@ const InactiveVendorsTable = () => {
 export default InactiveVendorsTable;
 
 
+
+
