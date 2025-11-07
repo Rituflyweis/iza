@@ -39,6 +39,8 @@ import InventoryManagementPage from '../pages/InventoryManagementPage';
 import AddInventoryPage from '../pages/AddInventoryPage';
 import InventoryDetailPage from '../pages/InventoryDetailPage';
 import AddOfferPage from '../pages/AddOfferPage';
+import CMSContentControlPage from '../pages/CMSContentControlPage';
+import AddCMSPostPage from '../pages/AddCMSPostPage';
 import AlertsPage from '../pages/AlertsPage';
 import AlertSettingsPage from '../pages/AlertSettingsPage';
 import CustomerSupportPage from '../pages/CustomerSupportPage';
@@ -54,6 +56,7 @@ import ShippingProviderPage from '../pages/ShippingProviderPage';
 import AddShippingPage from '../pages/AddShippingPage';
 import ConfigureShippingProviderPage from '../pages/ConfigureShippingProviderPage';
 import TrackOrdersShippingProviderPage from '../pages/TrackOrdersShippingProviderPage';
+import ReviewsFeedbackPage from '../pages/ReviewsFeedbackPage';
 
 const AppRoutes = () => {
   return (
@@ -79,8 +82,10 @@ const AppRoutes = () => {
         <Route path="/transaction-list" element={<TransactionManagementPage />} />
         <Route path="/video-management" element={<VideoManagementPage />} />
         <Route path="/video-management/add-video" element={<AddVideoPage />} />
-        {/* 
+        
         <Route path="/reward-management" element={<RewardManagementPage />} />
+        <Route path="/cms-content" element={<CMSContentControlPage />} />
+        <Route path="/cms-content/add" element={<AddCMSPostPage />} />
         <Route path="/notification" element={<NotificationPage />} />
         <Route path="/notification/edit/:id" element={<EditNotificationPage />} />
         <Route path="/notification/new/push" element={<AddPushNotificationPage />} />
@@ -89,7 +94,7 @@ const AppRoutes = () => {
         <Route path="/notification/new/whatsapp" element={<AddWhatsappPage />} />
        
         <Route path="/alerts" element={<AlertsPage />} />
-        <Route path="/alerts/settings" element={<AlertSettingsPage />} /> */}
+        <Route path="/alerts/settings" element={<AlertSettingsPage />} />
         <Route path="/offers-management" element={<OffersManagementPage />} />
          <Route path="/inventory" element={<InventoryManagementPage />} />
         <Route path="/inventory/add" element={<AddInventoryPage />} />
@@ -106,7 +111,7 @@ const AppRoutes = () => {
         <Route path="/user-detail/:id/communication/:commId" element={<UserCommunicationDetailPage />} />
         <Route path="/user-detail/:id/loyalty" element={<UserLoyaltyPointsPage />} />
         <Route path="/user-detail/:id/referrals" element={<UserReferralHistoryPage />} />
-        <Route path="/customer-support" element={<CustomerSupportPage />} />
+        {/* <Route path="/customer-support" element={<CustomerSupportPage />} />
         <Route path="/customer-support/ticket-detail/:id" element={<TicketDetailPage />} />
         <Route path="/customer-support/add-faq" element={<AddFAQPage />} />
         <Route path="/customer-support/edit-faq/:id" element={<AddFAQPage />} />
@@ -121,6 +126,7 @@ const AppRoutes = () => {
         <Route path="/third-party-integration/shipping-provider/add" element={<AddShippingPage />} />
         <Route path="/third-party-integration/shipping-provider/configure/:id" element={<ConfigureShippingProviderPage />} />
         <Route path="/third-party-integration/shipping-provider/track-orders/:id" element={<TrackOrdersShippingProviderPage />} />
+        <Route path="/reviews-feedback" element={<ReviewsFeedbackPage />} /> */}
         
         {/* Add more routes here as you create new features */}
       </Routes>

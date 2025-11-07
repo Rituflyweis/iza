@@ -16,3 +16,6 @@ const AddFAQ = () => {
 
 export default AddFAQ;
 
+
+
+

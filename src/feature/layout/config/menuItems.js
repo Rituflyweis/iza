@@ -81,7 +81,7 @@ const menuItems = [
   {
     id: 'review-feedback',
     label: 'Review & Feedback',
-    path: '/review-feedback',
+    path: '/reviews-feedback',
     icon: 'mdi:star-outline',
   },
   {

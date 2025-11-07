@@ -1,8 +1,6 @@
 import { useState } from 'react';
-import { Box } from '@mui/material';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
-import { red } from '@mui/material/colors';
 
 const Layout = ({ children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -12,57 +10,24 @@ const Layout = ({ children }) => {
   };
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#F5F5F5' }}>
+    <div className="flex min-h-screen bg-[#F5F5F5]">
       {/* Sidebar */}
       <Sidebar mobileOpen={mobileOpen} onMobileClose={handleDrawerToggle} />
 
       {/* Main Content Area */}
-      <Box 
-        component="main"
-        sx={{
-          flexGrow: 1,
-          width: { xs: '100%', md: `calc(100% - 280px)` },
-          ml: { xs: 0, md: '280px' },
-          display: 'flex',
-          flexDirection: 'column',
-          overflow: 'hidden',
-          backgroundColor: '#F5F5F5'
-        }}
-      >
+      <main className="flex-grow w-full md:w-[calc(100%-280px)] md:ml-[280px] flex flex-col overflow-hidden bg-[#F5F5F5]">
         {/* Page Content */}
-        <Box
-          sx={{
-            flexGrow: 1,
-            pt: { xs: '1rem', md: '1.5rem' },
-            pr: { xs: '1rem', md: '1.5rem' },
-            pb: { xs: '1rem', md: '1.5rem' },
-            pl: 0, // no gap from sidebar
-            bgcolor: '#F5F5F5',
-            overflow: 'auto',
-            width: '100%',
-          }}
-        >
-          <Box
-            sx={{
-              width: '100%',
-              bgcolor: '#fff',
-              border: '1px solid #e0e0e0',
-              borderRadius: '0.75rem',
-              p: { xs: '0.75rem', md: '1rem' },
-              boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
-              // Ensure the main white card covers the visible screen height
-              minHeight: 'calc(100vh - 3rem)',
-            }}
-          >
+        <div className="flex-grow pt-4 md:pt-6 pr-4 md:pr-6 pb-4 md:pb-6 pl-0 bg-[#F5F5F5] overflow-auto w-full">
+          <div className="w-full bg-white border border-[#e0e0e0] rounded-xl p-3 md:p-4 shadow-[0_1px_2px_rgba(0,0,0,0.04)] min-h-screen">
             {/* Header inside the same card */}
             <Header onMenuClick={handleDrawerToggle} embedded />
             
             {/* Page children */}
             {children}
-          </Box>
-        </Box>
-      </Box>
-    </Box>
+          </div>
+        </div>
+      </main>
+    </div>
   );
 };
 

@@ -1,137 +1,62 @@
-import { Box, InputBase, IconButton, Avatar, Typography } from '@mui/material';
 import { Search, NotificationsOutlined } from '@mui/icons-material';
-import { drawerWidth } from './Sidebar';
 
 const Header = ({ onMenuClick, embedded = false }) => {
   return (
-    <Box
-      sx={{
-        width: '100%',
-        bgcolor: '#fff',
-        borderBottom: '1px solid #e0e0e0',
-        px: 0, // divider edge-to-edge
-        py: 0,
-        mb: { xs: '0.75rem', md: '1rem' },
-        position: embedded ? 'static' : 'sticky',
-        top: embedded ? 'auto' : 0,
-        zIndex: embedded ? 1 : 1100,
-      }}
+    <div
+      className={`w-full bg-white border-b border-[#e0e0e0] px-0 py-0 mb-3 md:mb-4 ${
+        embedded ? 'static' : 'sticky top-0'
+      } ${embedded ? 'z-[1]' : 'z-[1100]'}`}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          px: { xs: '0.75rem', md: '1rem' },
-          py: '0.75rem',
-        }}
-      >
+      <div className="flex items-center justify-between px-3 md:px-4 py-3">
         {/* Mobile Menu Button */}
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          edge="start"
+        <button
           onClick={onMenuClick}
-          sx={{ mr: 2, display: { md: 'none' } }}
+          aria-label="open drawer"
+          className="mr-2 md:hidden p-2 rounded hover:bg-gray-100"
         >
-          <Box
-            sx={{
-              width: '1.5rem',
-              height: '1.5rem',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-            }}
-          >
-            <Box sx={{ width: '100%', height: '2px', bgcolor: '#000', borderRadius: '1px' }} />
-            <Box sx={{ width: '100%', height: '2px', bgcolor: '#000', borderRadius: '1px' }} />
-            <Box sx={{ width: '100%', height: '2px', bgcolor: '#000', borderRadius: '1px' }} />
-          </Box>
-        </IconButton>
+          <div className="w-6 h-6 flex flex-col justify-between">
+            <div className="w-full h-0.5 bg-black rounded-sm" />
+            <div className="w-full h-0.5 bg-black rounded-sm" />
+            <div className="w-full h-0.5 bg-black rounded-sm" />
+          </div>
+        </button>
 
         {/* Search Bar */}
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            bgcolor: '#F5F5F5',
-            borderRadius: '0.5rem',
-            px: '1rem',
-            py: '0.5rem',
-            flex: 1,
-            maxWidth: { xs: '100%', md: '400px' },
-            mr: { xs: '1rem', md: '2rem' },
-          }}
-        >
-          <Search sx={{ color: '#9E9E9E', fontSize: '1.25rem', mr: '0.75rem' }} />
-          <InputBase
+        <div className="flex items-center bg-[#F5F5F5] rounded-lg px-4 py-2 flex-1 max-w-full md:max-w-[400px] mr-4 md:mr-8">
+          <Search className="text-[#9E9E9E] text-xl mr-3" />
+          <input
+            type="text"
             placeholder="Search"
-            sx={{
-              flex: 1,
-              fontSize: '0.875rem',
-              '& input::placeholder': {
-                color: '#9E9E9E',
-                opacity: 1,
-              },
-            }}
+            className="flex-1 text-sm bg-transparent border-none outline-none placeholder:text-[#9E9E9E] placeholder:opacity-100"
           />
-        </Box>
+        </div>
 
         {/* Right Section - Notifications & User Profile */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <div className="flex items-center gap-4">
           {/* Notification Icon */}
-          <IconButton
-            sx={{
-              color: '#5A6678',
-              '&:hover': {
-                bgcolor: 'rgba(248, 6, 157, 0.1)',
-              },
-            }}
-          >
+          <button className="text-[#5A6678] p-2 rounded hover:bg-[rgba(248,6,157,0.1)] transition-colors">
             <NotificationsOutlined />
-          </IconButton>
+          </button>
 
           {/* User Avatar & Name */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <Box
-              sx={{
-                position: 'relative',
-                width: '2.5rem',
-                height: '2.5rem',
-              }}
-            >
-              <Box
-                component="img"
+          <div className="flex items-center gap-3">
+            <div className="relative w-10 h-10">
+              <img
                 src="https://i.pravatar.cc/150?img=12"
                 alt="Alice Whitaker"
                 onError={(e) => {
                   e.target.src = 'https://ui-avatars.com/api/?name=Alice+Whitaker&background=F8069D&color=fff&size=128';
                 }}
-                sx={{
-                  width: '100%',
-                  height: '100%',
-                  borderRadius: '50%',
-                  objectFit: 'cover',
-                  border: '2px solid #F8069D',
-                  boxSizing: 'border-box',
-                  display: 'block',
-                }}
+                className="w-full h-full rounded-full object-cover border-2 border-[#F8069D] box-border block"
               />
-            </Box>
-            <Typography
-              sx={{
-                display: { xs: 'none', sm: 'block' },
-                color: '#1A1A1A',
-                fontSize: '0.875rem',
-                fontWeight: 600,
-              }}
-            >
+            </div>
+            <span className="hidden sm:block text-[#1A1A1A] text-sm font-semibold">
               Alice Whitaker
-            </Typography>
-          </Box>
-        </Box>
-      </Box>
-    </Box>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

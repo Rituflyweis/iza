@@ -21,3 +21,6 @@ const AddFAQHeader = ({ isEdit = false }) => {
 
 export default AddFAQHeader;
 
+
+
+

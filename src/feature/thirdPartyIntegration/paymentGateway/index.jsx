@@ -12,3 +12,6 @@ const PaymentGateway = () => {
 
 export default PaymentGateway;
 
+
+
+

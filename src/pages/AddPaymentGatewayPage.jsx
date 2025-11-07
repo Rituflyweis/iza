@@ -10,3 +10,6 @@ const AddPaymentGatewayPage = () => {
 };
 
 export default AddPaymentGatewayPage;
+
+
+

@@ -11,3 +11,6 @@ const PaymentGatewayPage = () => {
 
 export default PaymentGatewayPage;
 
+
+
+

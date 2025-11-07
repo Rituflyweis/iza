@@ -61,7 +61,8 @@ const Sidebar = ({ mobileOpen, onMobileClose }) => {
           return (
             <ListItem key={item.id} disablePadding sx={{ mb: '0.25rem' }}>
               <ListItemButton
-                onClick={() => handleNavigation(item.path)}
+                onClick={() => item.path && handleNavigation(item.path)}
+                disabled={!item.path}
                 sx={{
                   borderRadius: '0.625rem',
                   minHeight: '3rem',

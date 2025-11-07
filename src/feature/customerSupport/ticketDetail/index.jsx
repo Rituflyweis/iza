@@ -12,3 +12,6 @@ const TicketDetail = () => {
 
 export default TicketDetail;
 
+
+
+

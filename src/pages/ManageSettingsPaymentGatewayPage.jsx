@@ -11,3 +11,6 @@ const ManageSettingsPaymentGatewayPage = () => {
 
 export default ManageSettingsPaymentGatewayPage;
 
+
+
+
