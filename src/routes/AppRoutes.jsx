@@ -84,8 +84,8 @@ const AppRoutes = () => {
         <Route path="/video-management/add-video" element={<AddVideoPage />} />
         
         <Route path="/reward-management" element={<RewardManagementPage />} />
-        <Route path="/cms-content" element={<CMSContentControlPage />} />
-        <Route path="/cms-content/add" element={<AddCMSPostPage />} />
+        {/* <Route path="/cms-content" element={<CMSContentControlPage />} />
+        <Route path="/cms-content/add" element={<AddCMSPostPage />} /> */}
         <Route path="/notification" element={<NotificationPage />} />
         <Route path="/notification/edit/:id" element={<EditNotificationPage />} />
         <Route path="/notification/new/push" element={<AddPushNotificationPage />} />
