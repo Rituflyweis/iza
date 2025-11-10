@@ -78,6 +78,7 @@ const menuItems = [
     path: '/customer-support',
     icon: 'mdi:headset',
   },
+ 
   {
     id: 'review-feedback',
     label: 'Review & Feedback',
@@ -101,6 +102,12 @@ const menuItems = [
     label: 'Alerts',
     path: '/alerts',
     icon: 'mdi:alert',
+  },
+  {
+    id: 'settings',
+    label: 'Settings',
+    path: '/settings',
+    icon: 'mdi:cog-outline',
   },
 ];
 
