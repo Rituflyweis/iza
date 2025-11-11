@@ -20,14 +20,12 @@ const sections = [
   {
     title: 'Loyalty & Rewards Configuration',
     description: 'Adjust loyalty tiers and reward rules',
-    path: '/settings/loyalty',
-    disabled: true,
+    path: '/settings/loyalty-rewards',
   },
   {
     title: 'Admin Roles & Permissions',
     description: 'Control access across admin roles',
     path: '/settings/admin-roles',
-    disabled: true,
   },
   {
     title: 'Shipping & Logistics',

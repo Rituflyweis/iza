@@ -18,7 +18,7 @@ const PaymentSettings = () => {
   };
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-4 py-8">
+    <div className="">
       <div className="mb-6 flex items-center gap-3">
         <button
           onClick={() => navigate(-1)}
@@ -45,20 +45,20 @@ const PaymentSettings = () => {
                 key={method.id}
                 className="flex flex-col gap-4 border-b border-gray-100 pb-6 last:border-none last:pb-0 md:flex-row md:items-center md:justify-between"
               >
-                <div className="flex items-center gap-4">
+
+                <div className="flex items-center  justify-between w-full md:w-1/3">
+
+                  <span className="text-sm font-semibold text-gray-800 w-25">{method.label}</span>
                   <button
                     onClick={() => toggleMethod(method.id)}
-                    className={`relative h-6 w-10 rounded-full transition ${
-                      enabled ? 'bg-pink-500' : 'bg-gray-200'
-                    }`}
+                    className={`relative h-6 w-10 rounded-full transition ${enabled ? 'bg-pink-500' : 'bg-gray-200'
+                      }`}
                   >
                     <span
-                      className={`absolute top-1/2 h-4 w-4 -translate-y-1/2 rounded-full bg-white shadow transition ${
-                        enabled ? 'right-1' : 'left-1'
-                      }`}
+                      className={`absolute top-1/2 h-4 w-4 -translate-y-1/2 rounded-full bg-white shadow transition ${enabled ? 'right-1' : 'left-1'
+                        }`}
                     />
                   </button>
-                  <span className="text-sm font-semibold text-gray-800">{method.label}</span>
                 </div>
 
                 <div className="grid gap-3 sm:grid-cols-2">

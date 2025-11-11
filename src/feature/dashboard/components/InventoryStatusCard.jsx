@@ -1,4 +1,12 @@
 import { Icon } from '@iconify/react';
+import {
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+} from '@mui/material';
 
 const inventoryItems = [
   { id: '01', category: 'Makeup', product: 'Lipstick', stock: '2 units', status: 'Critical', color: '#EF4444' },
@@ -25,28 +33,32 @@ const InventoryStatusCard = () => {
         </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full text-left text-sm text-gray-600">
-          <thead>
-            <tr className="text-xs uppercase tracking-wide text-gray-400">
-              <th className="py-2 pr-4 font-medium">#</th>
-              <th className="py-2 pr-4 font-medium">Categories</th>
-              <th className="py-2 pr-4 font-medium">Product Name</th>
-              <th className="py-2 pr-4 font-medium">Stock Level</th>
-              <th className="py-2 pr-4 font-medium">Status</th>
-            </tr>
-          </thead>
-          <tbody>
+      <TableContainer component="div" sx={{ overflowX: 'auto' }}>
+        <Table size="small" sx={{ minWidth: 650 }}>
+          <TableHead>
+            <TableRow sx={{ '& th': { fontSize: '12px', fontWeight: 600, color: '#9CA3AF' } }}>
+              <TableCell sx={{ borderBottom: '1px solid #F1F5F9' }}>#</TableCell>
+              <TableCell sx={{ borderBottom: '1px solid #F1F5F9' }}>Categories</TableCell>
+              <TableCell sx={{ borderBottom: '1px solid #F1F5F9' }}>Product Name</TableCell>
+              <TableCell sx={{ borderBottom: '1px solid #F1F5F9' }}>Stock Level</TableCell>
+              <TableCell sx={{ borderBottom: '1px solid #F1F5F9' }}>Status</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
             {inventoryItems.map((item, idx) => (
-              <tr
+              <TableRow
                 key={`${item.product}-${idx}`}
-                className="border-b border-gray-100 last:border-b-0 text-gray-700"
+                sx={{
+                  '&:nth-of-type(odd)': { backgroundColor: '#FFFFFF' },
+                  '&:nth-of-type(even)': { backgroundColor: '#F9FAFB' },
+                  '& td': { borderBottom: '1px solid #F1F5F9', fontSize: '13px', color: '#4B5563' },
+                }}
               >
-                <td className="py-3 pr-4 font-medium text-gray-900">{item.id}</td>
-                <td className="py-3 pr-4">{item.category}</td>
-                <td className="py-3 pr-4">{item.product}</td>
-                <td className="py-3 pr-4">{item.stock}</td>
-                <td className="py-3 pr-4">
+                <TableCell sx={{ fontWeight: 600, color: '#111827' }}>{item.id}</TableCell>
+                <TableCell>{item.category}</TableCell>
+                <TableCell>{item.product}</TableCell>
+                <TableCell>{item.stock}</TableCell>
+                <TableCell>
                   <span
                     className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold text-gray-700"
                     style={{ backgroundColor: `${item.color}15`, color: item.color }}
@@ -58,12 +70,12 @@ const InventoryStatusCard = () => {
                     />
                     {item.status}
                   </span>
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
-      </div>
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 };

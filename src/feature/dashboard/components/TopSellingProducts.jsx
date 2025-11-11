@@ -1,4 +1,12 @@
 import { Icon } from '@iconify/react';
+import {
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+} from '@mui/material';
 
 const products = [
   { id: '01', category: 'Skincare', name: 'Lipstick', popularity: 75, sales: '45%', sold: 200 },
@@ -24,28 +32,32 @@ const TopSellingProducts = () => {
         </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full text-left text-sm text-gray-600">
-          <thead>
-            <tr className="text-xs uppercase tracking-wide text-gray-400">
-              <th className="py-2 pr-4 font-medium">#</th>
-              <th className="py-2 pr-4 font-medium">Categories</th>
-              <th className="py-2 pr-4 font-medium">Name</th>
-              <th className="py-2 pr-4 font-medium">Popularity</th>
-              <th className="py-2 pr-4 font-medium">Sales</th>
-              <th className="py-2 pr-4 font-medium">Sold</th>
-            </tr>
-          </thead>
-          <tbody>
+      <TableContainer component="div" sx={{ overflowX: 'auto' }}>
+        <Table size="small" sx={{ minWidth: 650 }}>
+          <TableHead>
+            <TableRow sx={{ '& th': { fontSize: '12px', fontWeight: 600, color: '#9CA3AF' } }}>
+              <TableCell sx={{ borderBottom: '1px solid #F1F5F9' }}>#</TableCell>
+              <TableCell sx={{ borderBottom: '1px solid #F1F5F9' }}>Categories</TableCell>
+              <TableCell sx={{ borderBottom: '1px solid #F1F5F9' }}>Name</TableCell>
+              <TableCell sx={{ borderBottom: '1px solid #F1F5F9' }}>Popularity</TableCell>
+              <TableCell sx={{ borderBottom: '1px solid #F1F5F9' }}>Sales</TableCell>
+              <TableCell sx={{ borderBottom: '1px solid #F1F5F9' }}>Sold</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
             {products.map((item, idx) => (
-              <tr
+              <TableRow
                 key={`${item.name}-${idx}`}
-                className="border-b border-gray-100 last:border-b-0 text-gray-700"
+                sx={{
+                  '&:nth-of-type(odd)': { backgroundColor: '#FFFFFF' },
+                  '&:nth-of-type(even)': { backgroundColor: '#F9FAFB' },
+                  '& td': { borderBottom: '1px solid #F1F5F9', fontSize: '13px', color: '#4B5563' },
+                }}
               >
-                <td className="py-3 pr-4 font-medium text-gray-900">{item.id}</td>
-                <td className="py-3 pr-4">{item.category}</td>
-                <td className="py-3 pr-4">{item.name}</td>
-                <td className="py-3 pr-4">
+                <TableCell sx={{ fontWeight: 600, color: '#111827' }}>{item.id}</TableCell>
+                <TableCell>{item.category}</TableCell>
+                <TableCell>{item.name}</TableCell>
+                <TableCell>
                   <div className="flex items-center gap-3">
                     <div className="h-2 w-36 rounded-full bg-gray-100">
                       <div
@@ -56,14 +68,14 @@ const TopSellingProducts = () => {
                       />
                     </div>
                   </div>
-                </td>
-                <td className="py-3 pr-4 font-semibold text-pink-600">{item.sales}</td>
-                <td className="py-3 pr-4 font-semibold text-gray-900">{item.sold}</td>
-              </tr>
+                </TableCell>
+                <TableCell sx={{ fontWeight: 600, color: '#EC4899' }}>{item.sales}</TableCell>
+                <TableCell sx={{ fontWeight: 600, color: '#111827' }}>{item.sold}</TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
-      </div>
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 };

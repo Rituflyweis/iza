@@ -5,7 +5,7 @@ const GeneralSettings = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-4 py-8">
+    <div className="">
       <div className="mb-6 flex items-center gap-3">
         <button
           onClick={() => navigate(-1)}

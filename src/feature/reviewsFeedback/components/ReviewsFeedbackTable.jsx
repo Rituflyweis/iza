@@ -1,4 +1,12 @@
 import { Icon } from '@iconify/react';
+import {
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+} from '@mui/material';
 
 const reviewsData = [
   {
@@ -122,35 +130,52 @@ const statusStyles = {
 const ReviewsFeedbackTable = ({ onViewReview }) => {
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-      <div className="overflow-x-auto">
-        <table className="min-w-full table-auto">
-          <thead>
-            <tr className="text-left text-sm text-gray-500 bg-gray-50">
-              <th className="px-6 py-4 font-semibold">Review ID</th>
-              <th className="px-6 py-4 font-semibold">Product Name</th>
-              <th className="px-6 py-4 font-semibold">Customer Name</th>
-              <th className="px-6 py-4 font-semibold">Rating</th>
-              <th className="px-6 py-4 font-semibold">Review Text</th>
-              <th className="px-6 py-4 font-semibold">Date Submitted</th>
-              <th className="px-6 py-4 font-semibold">Status</th>
-              <th className="px-6 py-4 font-semibold text-center">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="text-sm text-gray-700">
+      <TableContainer component="div" sx={{ overflowX: 'auto' }}>
+        <Table sx={{ minWidth: 750 }}>
+          <TableHead>
+            <TableRow
+              sx={{
+                backgroundColor: '#F8FAFC',
+                '& th': {
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  color: '#64748B',
+                  borderBottom: '1px solid #E2E8F0',
+                },
+              }}
+            >
+              <TableCell>Review ID</TableCell>
+              <TableCell>Product Name</TableCell>
+              <TableCell>Customer Name</TableCell>
+              <TableCell>Rating</TableCell>
+              <TableCell>Review Text</TableCell>
+              <TableCell>Date Submitted</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell align="center">Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
             {reviewsData.map((review, index) => (
-              <tr
+              <TableRow
                 key={review.id}
-                className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
+                sx={{
+                  backgroundColor: index % 2 === 0 ? '#FFFFFF' : '#F9FAFB',
+                  '& td': {
+                    fontSize: '13px',
+                    color: '#475569',
+                    borderBottom: '1px solid #E2E8F0',
+                  },
+                }}
               >
-                <td className="px-6 py-4 font-semibold text-gray-900">{review.id}</td>
-                <td className="px-6 py-4">{review.product}</td>
-                <td className="px-6 py-4">{review.customer}</td>
-                <td className="px-6 py-4">{review.rating}</td>
-                <td className="px-6 py-4 max-w-xs">
+                <TableCell sx={{ fontWeight: 600, color: '#111827' }}>{review.id}</TableCell>
+                <TableCell>{review.product}</TableCell>
+                <TableCell>{review.customer}</TableCell>
+                <TableCell>{review.rating}</TableCell>
+                <TableCell sx={{ maxWidth: 240 }}>
                   <p className="line-clamp-2">{review.review}</p>
-                </td>
-                <td className="px-6 py-4">{review.date}</td>
-                <td className="px-6 py-4">
+                </TableCell>
+                <TableCell>{review.date}</TableCell>
+                <TableCell>
                   <span
                     className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
                       statusStyles[review.status] || 'bg-gray-100 text-gray-600'
@@ -158,8 +183,8 @@ const ReviewsFeedbackTable = ({ onViewReview }) => {
                   >
                     {review.status}
                   </span>
-                </td>
-                <td className="px-6 py-4">
+                </TableCell>
+                <TableCell align="center">
                   <button
                     aria-label="View review"
                     onClick={() => onViewReview?.(review)}
@@ -167,12 +192,12 @@ const ReviewsFeedbackTable = ({ onViewReview }) => {
                   >
                     <Icon icon="mdi:eye-outline" width={18} height={18} />
                   </button>
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
-      </div>
+          </TableBody>
+        </Table>
+      </TableContainer>
 
       <div className="flex items-center justify-between px-6 py-4 text-sm text-gray-500">
         <span>Page 1</span>

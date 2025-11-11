@@ -6,7 +6,7 @@ const TaxRules = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 py-8">
+    <div className="">
       <div className="mb-6 flex items-center gap-3">
         <button
           onClick={() => navigate(-1)}
@@ -20,7 +20,10 @@ const TaxRules = () => {
         </div>
       </div>
 
-      <TaxRulesTable onAddNew={() => navigate('/settings/tax-rules/new')} />
+      <TaxRulesTable
+        onAddNew={() => navigate('/settings/tax-rules/new')}
+        onEdit={() => navigate('/settings/tax-rules/new')}
+      />
     </div>
   );
 };

@@ -62,6 +62,13 @@ import GeneralSettingsPage from '../pages/GeneralSettingsPage';
 import PaymentSettingsPage from '../pages/PaymentSettingsPage';
 import TaxRulesPage from '../pages/TaxRulesPage';
 import AddTaxRulePage from '../pages/AddTaxRulePage';
+import LoyaltyRewardsPage from '../pages/LoyaltyRewardsPage';
+import AddLoyaltyProgramPage from '../pages/AddLoyaltyProgramPage';
+import AddRewardTierPage from '../pages/AddRewardTierPage';
+import AdminRolesPage from '../pages/AdminRolesPage';
+import AddAdminRolePage from '../pages/AddAdminRolePage';
+import VendorManagementPage from '../pages/VendorManagementPage';
+import ViewVendorFormPage from '../pages/ViewVendorFormPage';
 
 const AppRoutes = () => {
   return (
@@ -132,12 +139,19 @@ const AppRoutes = () => {
         <Route path="/third-party-integration/shipping-provider/configure/:id" element={<ConfigureShippingProviderPage />} />
         <Route path="/third-party-integration/shipping-provider/track-orders/:id" element={<TrackOrdersShippingProviderPage />} />
         <Route path="/reviews-feedback" element={<ReviewsFeedbackPage />} />
-        <Route path="/settings" element={<SettingsPage />} />
+        */}
+        {/* <Route path="/vendor-management" element={<VendorManagementPage />} />
+        <Route path="/vendor-management/form" element={<ViewVendorFormPage />} /> */}
+         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/settings/general" element={<GeneralSettingsPage />} />
         <Route path="/settings/payment" element={<PaymentSettingsPage />} />
         <Route path="/settings/tax-rules" element={<TaxRulesPage />} />
-        <Route path="/settings/tax-rules/new" element={<AddTaxRulePage />} /> */}
-        
+        <Route path="/settings/tax-rules/new" element={<AddTaxRulePage />} />
+        <Route path="/settings/loyalty-rewards" element={<LoyaltyRewardsPage />} />
+        <Route path="/settings/loyalty-rewards/new/program" element={<AddLoyaltyProgramPage />} />
+        <Route path="/settings/loyalty-rewards/new/reward-tier" element={<AddRewardTierPage />} />
+        <Route path="/settings/admin-roles" element={<AdminRolesPage />} />
+        <Route path="/settings/admin-roles/new" element={<AddAdminRolePage />} />
         {/* Add more routes here as you create new features */}
       </Routes>
     </BrowserRouter>

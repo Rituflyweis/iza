@@ -61,6 +61,10 @@ const CustomTable = ({
   const paginatedRows = rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   const renderCellContent = (column, row) => {
+    if (typeof column.render === 'function') {
+      return column.render(row);
+    }
+
     if (column.id === 'status') {
       const status = row[column.id];
       const isActive = status === 'Active';
