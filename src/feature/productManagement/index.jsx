@@ -21,7 +21,7 @@ const ProductManagement = () => {
   };
   return (
     <Box>
-      <ProductManagementHeading onAddProductClick={openChooser} onFilterClick={() => setChooserOpen(true)} />
+      <ProductManagementHeading onAddProductClick={openChooser} />
       <ProductManagementTable />
       <AddProductChooser open={chooserOpen} onClose={closeChooser} onBulkUpload={goToAddBulkProduct} onOneProduct={goToAddProduct} />
     </Box>

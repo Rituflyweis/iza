@@ -2,10 +2,21 @@ import { Box, Typography, Button, Menu, MenuItem } from '@mui/material';
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FilterOffcanvas } from '../../../components';
+import UserFilterBody from './UserFilterBody';
 
 const UserManagementHeading = () => {
   const [exportAnchor, setExportAnchor] = useState(null);
   const [importAnchor, setImportAnchor] = useState(null);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [filterData, setFilterData] = useState({
+    status: [],
+    months: [],
+    year: '',
+    startDate: '',
+    endDate: '',
+    order: '',
+  });
   const navigate = useNavigate();
 
   const handleCreate = () => {
@@ -13,8 +24,28 @@ const UserManagementHeading = () => {
   };
 
   const handleFilter = () => {
-    console.log('Filter clicked');
-    // Implement filter logic
+    setFilterOpen(true);
+  };
+
+  const handleFilterChange = (newFilterData) => {
+    setFilterData(newFilterData);
+  };
+
+  const handleResetFilters = () => {
+    setFilterData({
+      status: [],
+      months: [],
+      year: '',
+      startDate: '',
+      endDate: '',
+      order: '',
+    });
+  };
+
+  const handleApplyFilters = () => {
+    console.log('Applied filters:', filterData);
+    // Implement filter logic here
+    // You can pass filterData to your table component or API call
   };
 
   const handleExportClick = (event) => {
@@ -228,6 +259,20 @@ const UserManagementHeading = () => {
           </MenuItem>
         ))}
       </Menu>
+
+      {/* Filter Offcanvas */}
+      <FilterOffcanvas
+        open={filterOpen}
+        onClose={() => setFilterOpen(false)}
+        onReset={handleResetFilters}
+        onApply={handleApplyFilters}
+        title="Filter"
+      >
+        <UserFilterBody
+          filterData={filterData}
+          onFilterChange={handleFilterChange}
+        />
+      </FilterOffcanvas>
     </Box>
   );
 };

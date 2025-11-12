@@ -1,14 +1,45 @@
 import { Box, Typography, Button, Menu, MenuItem } from '@mui/material';
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
+import { FilterOffcanvas } from '../../../components';
+import TransactionFilterBody from './TransactionFilterBody';
 
 const TransactionManagementHeading = () => {
   const [exportAnchor, setExportAnchor] = useState(null);
   const [importAnchor, setImportAnchor] = useState(null);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [filterData, setFilterData] = useState({
+    list: '',
+    status: [],
+    months: [],
+    year: '',
+    startDate: '',
+    endDate: '',
+  });
 
   const handleFilter = () => {
-    console.log('Filter clicked');
-    // Implement filter logic
+    setFilterOpen(true);
+  };
+
+  const handleFilterChange = (newFilterData) => {
+    setFilterData(newFilterData);
+  };
+
+  const handleResetFilters = () => {
+    setFilterData({
+      list: '',
+      status: [],
+      months: [],
+      year: '',
+      startDate: '',
+      endDate: '',
+    });
+  };
+
+  const handleApplyFilters = () => {
+    console.log('Applied filters:', filterData);
+    // Implement filter logic here
+    // You can pass filterData to your table component or API call
   };
 
   const handleExportClick = (event) => {
@@ -201,6 +232,20 @@ const TransactionManagementHeading = () => {
           </MenuItem>
         ))}
       </Menu>
+
+      {/* Filter Offcanvas */}
+      <FilterOffcanvas
+        open={filterOpen}
+        onClose={() => setFilterOpen(false)}
+        onReset={handleResetFilters}
+        onApply={handleApplyFilters}
+        title="Filter"
+      >
+        <TransactionFilterBody
+          filterData={filterData}
+          onFilterChange={handleFilterChange}
+        />
+      </FilterOffcanvas>
     </Box>
   );
 };

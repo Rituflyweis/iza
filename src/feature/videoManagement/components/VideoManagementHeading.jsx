@@ -1,17 +1,45 @@
 import { Box, Typography, Button } from '@mui/material';
 import { Icon } from '@iconify/react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FilterOffcanvas } from '../../../components';
+import VideoFilterBody from './VideoFilterBody';
 
 const VideoManagementHeading = () => {
   const navigate = useNavigate();
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [filterData, setFilterData] = useState({
+    type: [],
+    status: [],
+    months: [],
+    uploadedOn: '',
+  });
 
   const handleFilter = () => {
-    console.log('Filter clicked');
-    // Implement filter logic
+    setFilterOpen(true);
   };
 
   const handleAddNew = () => {
     navigate('/video-management/add-video');
+  };
+
+  const handleFilterChange = (newFilterData) => {
+    setFilterData(newFilterData);
+  };
+
+  const handleResetFilters = () => {
+    setFilterData({
+      type: [],
+      status: [],
+      months: [],
+      uploadedOn: '',
+    });
+  };
+
+  const handleApplyFilters = () => {
+    console.log('Applied filters:', filterData);
+    // Implement filter logic here
+    // You can pass filterData to your table component or API call
   };
 
   return (
@@ -59,7 +87,7 @@ const VideoManagementHeading = () => {
               },
             }}
           >
-            <Icon icon="mdi:chevron-left" width="18" height="18" style={{ marginRight: '0.5rem' }} />
+            <Icon icon="mdi:filter" width="18" height="18" style={{ marginRight: '0.5rem' }} />
             Filter
           </Button>
 
@@ -85,6 +113,20 @@ const VideoManagementHeading = () => {
           </Button>
         </Box>
       </Box>
+
+      {/* Filter Offcanvas */}
+      <FilterOffcanvas
+        open={filterOpen}
+        onClose={() => setFilterOpen(false)}
+        onReset={handleResetFilters}
+        onApply={handleApplyFilters}
+        title="Filter"
+      >
+        <VideoFilterBody
+          filterData={filterData}
+          onFilterChange={handleFilterChange}
+        />
+      </FilterOffcanvas>
     </Box>
   );
 };

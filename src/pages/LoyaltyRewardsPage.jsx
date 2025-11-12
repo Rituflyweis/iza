@@ -11,3 +11,5 @@ const LoyaltyRewardsPage = () => {
 
 export default LoyaltyRewardsPage;
 
+
+

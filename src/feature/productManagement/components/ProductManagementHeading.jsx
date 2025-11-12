@@ -1,15 +1,46 @@
 import { Box, Typography, Button } from '@mui/material';
 import { Icon } from '@iconify/react';
+import { useState } from 'react';
+import { FilterOffcanvas } from '../../../components';
+import ProductFilterBody from './ProductFilterBody';
 
-const ProductManagementHeading = ({ onAddProductClick, onFilterClick }) => {
+const ProductManagementHeading = ({ onAddProductClick }) => {
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [filterData, setFilterData] = useState({
+    brand: '',
+    category: '',
+    ingredients: '',
+    order: '',
+    gender: [],
+  });
+
   const handleFilter = () => {
-    console.log('Filter clicked');
-    onFilterClick && onFilterClick();
+    setFilterOpen(true);
   };
 
   const handleAddProduct = () => {
     console.log('Add New Product clicked');
     onAddProductClick && onAddProductClick();
+  };
+
+  const handleFilterChange = (newFilterData) => {
+    setFilterData(newFilterData);
+  };
+
+  const handleResetFilters = () => {
+    setFilterData({
+      brand: '',
+      category: '',
+      ingredients: '',
+      order: '',
+      gender: [],
+    });
+  };
+
+  const handleApplyFilters = () => {
+    console.log('Applied filters:', filterData);
+    // Implement filter logic here
+    // You can pass filterData to your table component or API call
   };
 
   return (
@@ -82,6 +113,20 @@ const ProductManagementHeading = ({ onAddProductClick, onFilterClick }) => {
           </Button>
         </Box>
       </Box>
+
+      {/* Filter Offcanvas */}
+      <FilterOffcanvas
+        open={filterOpen}
+        onClose={() => setFilterOpen(false)}
+        onReset={handleResetFilters}
+        onApply={handleApplyFilters}
+        title="Filter"
+      >
+        <ProductFilterBody
+          filterData={filterData}
+          onFilterChange={handleFilterChange}
+        />
+      </FilterOffcanvas>
     </Box>
   );
 };

@@ -1,9 +1,38 @@
 import { Icon } from '@iconify/react';
+import { useState } from 'react';
+import { FilterOffcanvas } from '../../../components';
+import OrderFilterBody from './OrderFilterBody';
 
 const OrderManagementHeading = () => {
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [filterData, setFilterData] = useState({
+    list: '',
+    status: [],
+    paymentType: [],
+    months: [],
+  });
+
   const handleFilter = () => {
-    console.log('Filter clicked');
-    // Implement filter logic
+    setFilterOpen(true);
+  };
+
+  const handleFilterChange = (newFilterData) => {
+    setFilterData(newFilterData);
+  };
+
+  const handleResetFilters = () => {
+    setFilterData({
+      list: '',
+      status: [],
+      paymentType: [],
+      months: [],
+    });
+  };
+
+  const handleApplyFilters = () => {
+    console.log('Applied filters:', filterData);
+    // Implement filter logic here
+    // You can pass filterData to your table component or API call
   };
 
   return (
@@ -26,6 +55,20 @@ const OrderManagementHeading = () => {
           Filter
         </button>
       </div>
+
+      {/* Filter Offcanvas */}
+      <FilterOffcanvas
+        open={filterOpen}
+        onClose={() => setFilterOpen(false)}
+        onReset={handleResetFilters}
+        onApply={handleApplyFilters}
+        title="Filter"
+      >
+        <OrderFilterBody
+          filterData={filterData}
+          onFilterChange={handleFilterChange}
+        />
+      </FilterOffcanvas>
     </div>
   );
 };

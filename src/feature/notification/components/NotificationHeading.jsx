@@ -2,15 +2,47 @@ import { Box, Typography, Button, Menu, MenuItem } from '@mui/material';
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FilterOffcanvas } from '../../../components';
+import NotificationFilterBody from './NotificationFilterBody';
 
 const NotificationHeading = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [filterData, setFilterData] = useState({
+    notification: [],
+    status: [],
+    months: [],
+    year: '',
+  });
   const open = Boolean(anchorEl);
-  const handleFilter = () => {};
+
+  const handleFilter = () => {
+    setFilterOpen(true);
+  };
+
   const handleAdd = (e) => setAnchorEl(e.currentTarget);
   const handleClose = () => setAnchorEl(null);
   const handleSelect = (path) => { handleClose(); navigate(path); };
+
+  const handleFilterChange = (newFilterData) => {
+    setFilterData(newFilterData);
+  };
+
+  const handleResetFilters = () => {
+    setFilterData({
+      notification: [],
+      status: [],
+      months: [],
+      year: '',
+    });
+  };
+
+  const handleApplyFilters = () => {
+    console.log('Applied filters:', filterData);
+    // Implement filter logic here
+    // You can pass filterData to your table component or API call
+  };
 
   return (
     <Box sx={{ mb: '2rem' }}>
@@ -40,6 +72,20 @@ const NotificationHeading = () => {
         <MenuItem onClick={() => handleSelect('/notification/new/sms')}>SMS</MenuItem>
         <MenuItem onClick={() => handleSelect('/notification/new/whatsapp')}>Whatsapp</MenuItem>
       </Menu>
+
+      {/* Filter Offcanvas */}
+      <FilterOffcanvas
+        open={filterOpen}
+        onClose={() => setFilterOpen(false)}
+        onReset={handleResetFilters}
+        onApply={handleApplyFilters}
+        title="Filter"
+      >
+        <NotificationFilterBody
+          filterData={filterData}
+          onFilterChange={handleFilterChange}
+        />
+      </FilterOffcanvas>
     </Box>
   );
 };

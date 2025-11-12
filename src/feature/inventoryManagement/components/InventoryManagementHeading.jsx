@@ -1,11 +1,48 @@
 import { Box, Typography, Button } from '@mui/material';
 import { Icon } from '@iconify/react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FilterOffcanvas } from '../../../components';
+import InventoryFilterBody from './InventoryFilterBody';
 
 const InventoryManagementHeading = () => {
   const navigate = useNavigate();
-  const handleFilter = () => console.log('Filter');
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [filterData, setFilterData] = useState({
+    status: [],
+    months: [],
+    sku: '',
+    startDate: '',
+    endDate: '',
+    order: '',
+  });
+
+  const handleFilter = () => {
+    setFilterOpen(true);
+  };
+
   const handleAdd = () => navigate('/inventory/add');
+
+  const handleFilterChange = (newFilterData) => {
+    setFilterData(newFilterData);
+  };
+
+  const handleResetFilters = () => {
+    setFilterData({
+      status: [],
+      months: [],
+      sku: '',
+      startDate: '',
+      endDate: '',
+      order: '',
+    });
+  };
+
+  const handleApplyFilters = () => {
+    console.log('Applied filters:', filterData);
+    // Implement filter logic here
+    // You can pass filterData to your table component or API call
+  };
 
   return (
     <Box sx={{ mb: '2rem' }}>
@@ -34,11 +71,27 @@ const InventoryManagementHeading = () => {
           </Button>
         </Box>
       </Box>
+
+      {/* Filter Offcanvas */}
+      <FilterOffcanvas
+        open={filterOpen}
+        onClose={() => setFilterOpen(false)}
+        onReset={handleResetFilters}
+        onApply={handleApplyFilters}
+        title="Filter"
+      >
+        <InventoryFilterBody
+          filterData={filterData}
+          onFilterChange={handleFilterChange}
+        />
+      </FilterOffcanvas>
     </Box>
   );
 };
 
 export default InventoryManagementHeading;
+
+
 
 
 
