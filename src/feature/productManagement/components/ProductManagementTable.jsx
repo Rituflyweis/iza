@@ -14,10 +14,13 @@ import {
   Chip,
 } from '@mui/material';
 import { Icon } from '@iconify/react';
+import { DeleteModal } from '../../../components';
 
 const ProductManagementTable = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [productToDelete, setProductToDelete] = useState(null);
 
   // Sample data
   const products = [
@@ -41,7 +44,18 @@ const ProductManagementTable = () => {
   };
 
   const handleDelete = (productId) => {
-    console.log(`Delete product ${productId}`);
+    const product = products.find(p => p.id === productId);
+    setProductToDelete(product);
+    setDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (productToDelete) {
+      console.log(`Deleting product ${productToDelete.id}: ${productToDelete.name}`);
+      // Implement actual delete logic here (API call, state update, etc.)
+      // Example: deleteProduct(productToDelete.id);
+    }
+    setProductToDelete(null);
   };
 
   return (
@@ -219,6 +233,19 @@ const ProductManagementTable = () => {
           </IconButton>
         </Box>
       </Box>
+
+      {/* Delete Modal */}
+      <DeleteModal
+        open={deleteModalOpen}
+        onClose={() => {
+          setDeleteModalOpen(false);
+          setProductToDelete(null);
+        }}
+        onConfirm={handleConfirmDelete}
+        title="Delete Product"
+        message="Are you sure you want to delete this product? This action cannot be undone."
+        itemName={productToDelete?.name}
+      />
     </Box>
   );
 };

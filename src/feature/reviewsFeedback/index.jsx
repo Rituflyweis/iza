@@ -18,7 +18,7 @@ const ReviewsFeedback = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto w-full px-4 py-8">
+    <div className="">
       <ReviewsFeedbackHeader />
       <ReviewsFeedbackTable onViewReview={handleViewReview} />
       <ReviewDetailsModal open={isModalOpen} onClose={handleCloseModal} review={selectedReview} />

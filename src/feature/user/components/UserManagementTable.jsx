@@ -18,11 +18,14 @@ import {
 } from '@mui/material';
 import { Icon } from '@iconify/react';
 import { useNavigate } from 'react-router-dom';
+import { DeleteModal } from '../../../components';
 
 const UserManagementTable = () => {
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
   const [roles, setRoles] = useState({});
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState(null);
 
   // Sample data
   const users = [
@@ -54,7 +57,18 @@ const UserManagementTable = () => {
   };
 
   const handleDelete = (userId) => {
-    console.log(`Delete user ${userId}`);
+    const user = users.find(u => u.id === userId);
+    setUserToDelete(user);
+    setDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (userToDelete) {
+      console.log(`Deleting user ${userToDelete.id}: ${userToDelete.name}`);
+      // Implement actual delete logic here (API call, state update, etc.)
+      // Example: deleteUser(userToDelete.id);
+    }
+    setUserToDelete(null);
   };
 
   return (
@@ -254,6 +268,19 @@ const UserManagementTable = () => {
           </IconButton>
         </Box>
       </Box>
+
+      {/* Delete Modal */}
+      <DeleteModal
+        open={deleteModalOpen}
+        onClose={() => {
+          setDeleteModalOpen(false);
+          setUserToDelete(null);
+        }}
+        onConfirm={handleConfirmDelete}
+        title="Delete User"
+        message="Are you sure you want to delete this user? This action cannot be undone."
+        itemName={userToDelete?.name}
+      />
     </Box>
   );
 };

@@ -138,10 +138,11 @@ const AppRoutes = () => {
         <Route path="/third-party-integration/shipping-provider/add" element={<AddShippingPage />} />
         <Route path="/third-party-integration/shipping-provider/configure/:id" element={<ConfigureShippingProviderPage />} />
         <Route path="/third-party-integration/shipping-provider/track-orders/:id" element={<TrackOrdersShippingProviderPage />} />
-        <Route path="/reviews-feedback" element={<ReviewsFeedbackPage />} />
+      
         */}
-        {/* <Route path="/vendor-management" element={<VendorManagementPage />} />
-        <Route path="/vendor-management/form" element={<ViewVendorFormPage />} /> */}
+          <Route path="/reviews-feedback" element={<ReviewsFeedbackPage />} />
+        <Route path="/vendor-management" element={<VendorManagementPage />} />
+        <Route path="/vendor-management/form" element={<ViewVendorFormPage />} />
          <Route path="/settings" element={<SettingsPage />} />
         <Route path="/settings/general" element={<GeneralSettingsPage />} />
         <Route path="/settings/payment" element={<PaymentSettingsPage />} />

@@ -10,16 +10,17 @@ const ProductDetailHeader = () => {
       <div className="flex items-center gap-2">
         <button
           onClick={() => navigate('/product-management')}
-          className="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-100 transition-colors"
+          className="flex items-center gap-1 text-gray-700 hover:text-gray-900 transition-colors"
         >
-          <Icon icon="mdi:chevron-left" width={24} height={24} className="text-gray-700" />
+          <Icon icon="mdi:chevron-left" width={20} height={20} />
+          <span className="text-lg font-semibold text-gray-900">View Details</span>
         </button>
-        <h2 className="text-lg font-semibold text-gray-900">View Details</h2>
       </div>
       <button 
         onClick={() => navigate(`/product-management/edit/${id}`)}
-        className="bg-[#F8069D] hover:bg-[#C1057D] text-white px-4 py-2 rounded-lg text-sm font-semibold transition"
+        className="bg-[#F8069D] hover:bg-[#C1057D] text-white px-4 py-2.5 rounded-lg text-sm font-semibold transition flex items-center gap-2"
       >
+        <Icon icon="mdi:pencil" width={16} height={16} />
         Edit
       </button>
     </div>

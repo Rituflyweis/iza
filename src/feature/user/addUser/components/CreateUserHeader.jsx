@@ -15,7 +15,7 @@ const CreateUserHeader = () => {
         </button>
         <span className="font-semibold text-gray-900 text-base">
           Create user
-        </span>
+        </span>image.png
       </div>
 
       <button className="bg-pink-600 hover:bg-pink-700 text-white font-semibold px-4 py-2 rounded-md text-sm">
