@@ -129,7 +129,11 @@ const AppRoutes = () => {
         {/* <Route path="/customer-support/edit-faq/:id" element={<AddFAQPage />} />
         <Route path="/customer-support/add-contact" element={<AddContactPage />} />
         <Route path="/customer-support/edit-contact/:id" element={<AddContactPage />} />
-        <Route path="/third-party-integration" element={<ThirdPartyIntegrationPage />} />
+       
+        <Route path="/third-party-integration/shipping-provider/track-orders/:id" element={<TrackOrdersShippingProviderPage />} />
+      
+        */}
+         <Route path="/third-party-integration" element={<ThirdPartyIntegrationPage />} />
         <Route path="/third-party-integration/payment-gateway" element={<PaymentGatewayPage />} />
         <Route path="/third-party-integration/payment-gateway/add" element={<AddPaymentGatewayPage />} />
         <Route path="/third-party-integration/payment-gateway/configure/:id" element={<ConfigurePaymentGatewayPage />} />
@@ -137,9 +141,6 @@ const AppRoutes = () => {
         <Route path="/third-party-integration/shipping-provider" element={<ShippingProviderPage />} />
         <Route path="/third-party-integration/shipping-provider/add" element={<AddShippingPage />} />
         <Route path="/third-party-integration/shipping-provider/configure/:id" element={<ConfigureShippingProviderPage />} />
-        <Route path="/third-party-integration/shipping-provider/track-orders/:id" element={<TrackOrdersShippingProviderPage />} />
-      
-        */}
           <Route path="/reviews-feedback" element={<ReviewsFeedbackPage />} />
         <Route path="/vendor-management" element={<VendorManagementPage />} />
         <Route path="/vendor-management/form" element={<ViewVendorFormPage />} />
