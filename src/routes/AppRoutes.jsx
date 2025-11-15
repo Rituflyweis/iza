@@ -69,6 +69,7 @@ import AdminRolesPage from '../pages/AdminRolesPage';
 import AddAdminRolePage from '../pages/AddAdminRolePage';
 import VendorManagementPage from '../pages/VendorManagementPage';
 import ViewVendorFormPage from '../pages/ViewVendorFormPage';
+import ReportAnalysisPage from '../pages/ReportAnalysisPage';
 
 const AppRoutes = () => {
   return (
@@ -79,7 +80,7 @@ const AppRoutes = () => {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/verify-otp" element={<OTPPage />} />
-        
+
         {/* Dashboard Routes */}
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/user-management" element={<UserManagementPage />} />
@@ -94,7 +95,7 @@ const AppRoutes = () => {
         <Route path="/transaction-list" element={<TransactionManagementPage />} />
         <Route path="/video-management" element={<VideoManagementPage />} />
         <Route path="/video-management/add-video" element={<AddVideoPage />} />
-        
+
         <Route path="/reward-management" element={<RewardManagementPage />} />
         <Route path="/cms-content" element={<CMSContentControlPage />} />
         <Route path="/cms-content/add" element={<AddCMSPostPage />} />
@@ -108,7 +109,7 @@ const AppRoutes = () => {
         <Route path="/alerts" element={<AlertsPage />} />
         <Route path="/alerts/settings" element={<AlertSettingsPage />} /> */}
         <Route path="/offers-management" element={<OffersManagementPage />} />
-         <Route path="/inventory" element={<InventoryManagementPage />} />
+        <Route path="/inventory" element={<InventoryManagementPage />} />
         <Route path="/inventory/add" element={<AddInventoryPage />} />
         <Route path="/inventory/edit/:id" element={<AddInventoryPage />} />
         <Route path="/inventory/detail/:id" element={<InventoryDetailPage />} />
@@ -123,17 +124,17 @@ const AppRoutes = () => {
         <Route path="/user-detail/:id/communication/:commId" element={<UserCommunicationDetailPage />} />
         <Route path="/user-detail/:id/loyalty" element={<UserLoyaltyPointsPage />} />
         <Route path="/user-detail/:id/referrals" element={<UserReferralHistoryPage />} />
-        {/* <Route path="/customer-support" element={<CustomerSupportPage />} />
+        <Route path="/customer-support" element={<CustomerSupportPage />} />
         <Route path="/customer-support/ticket-detail/:id" element={<TicketDetailPage />} />
-        <Route path="/customer-support/add-faq" element={<AddFAQPage />} /> */}
-        {/* <Route path="/customer-support/edit-faq/:id" element={<AddFAQPage />} />
+        <Route path="/customer-support/add-faq" element={<AddFAQPage />} />
+        <Route path="/customer-support/edit-faq/:id" element={<AddFAQPage />} />
         <Route path="/customer-support/add-contact" element={<AddContactPage />} />
         <Route path="/customer-support/edit-contact/:id" element={<AddContactPage />} />
-       
+
         <Route path="/third-party-integration/shipping-provider/track-orders/:id" element={<TrackOrdersShippingProviderPage />} />
-      
-        */}
-         <Route path="/third-party-integration" element={<ThirdPartyIntegrationPage />} />
+
+
+        <Route path="/third-party-integration" element={<ThirdPartyIntegrationPage />} />
         <Route path="/third-party-integration/payment-gateway" element={<PaymentGatewayPage />} />
         <Route path="/third-party-integration/payment-gateway/add" element={<AddPaymentGatewayPage />} />
         <Route path="/third-party-integration/payment-gateway/configure/:id" element={<ConfigurePaymentGatewayPage />} />
@@ -141,10 +142,11 @@ const AppRoutes = () => {
         <Route path="/third-party-integration/shipping-provider" element={<ShippingProviderPage />} />
         <Route path="/third-party-integration/shipping-provider/add" element={<AddShippingPage />} />
         <Route path="/third-party-integration/shipping-provider/configure/:id" element={<ConfigureShippingProviderPage />} />
-          <Route path="/reviews-feedback" element={<ReviewsFeedbackPage />} />
+        <Route path="/reviews-feedback" element={<ReviewsFeedbackPage />} />
         <Route path="/vendor-management" element={<VendorManagementPage />} />
         <Route path="/vendor-management/form" element={<ViewVendorFormPage />} />
-         <Route path="/settings" element={<SettingsPage />} />
+        {/* <Route path="/report-analysis" element={<ReportAnalysisPage />} /> */}
+        {/* <Route path="/settings" element={<SettingsPage />} />
         <Route path="/settings/general" element={<GeneralSettingsPage />} />
         <Route path="/settings/payment" element={<PaymentSettingsPage />} />
         <Route path="/settings/tax-rules" element={<TaxRulesPage />} />
@@ -153,7 +155,7 @@ const AppRoutes = () => {
         <Route path="/settings/loyalty-rewards/new/program" element={<AddLoyaltyProgramPage />} />
         <Route path="/settings/loyalty-rewards/new/reward-tier" element={<AddRewardTierPage />} />
         <Route path="/settings/admin-roles" element={<AdminRolesPage />} />
-        <Route path="/settings/admin-roles/new" element={<AddAdminRolePage />} />
+        <Route path="/settings/admin-roles/new" element={<AddAdminRolePage />} /> */}
         {/* Add more routes here as you create new features */}
       </Routes>
     </BrowserRouter>
