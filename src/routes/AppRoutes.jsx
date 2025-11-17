@@ -99,12 +99,13 @@ const AppRoutes = () => {
         <Route path="/reward-management" element={<RewardManagementPage />} />
         <Route path="/cms-content" element={<CMSContentControlPage />} />
         <Route path="/cms-content/add" element={<AddCMSPostPage />} />
-        {/* <Route path="/notification" element={<NotificationPage />} />
+        <Route path="/notification" element={<NotificationPage />} />
         <Route path="/notification/edit/:id" element={<EditNotificationPage />} />
         <Route path="/notification/new/push" element={<AddPushNotificationPage />} />
         <Route path="/notification/new/email" element={<AddEmailPage />} />
         <Route path="/notification/new/sms" element={<AddSmsPage />} />
         <Route path="/notification/new/whatsapp" element={<AddWhatsappPage />} />
+        {/* 
        
         <Route path="/alerts" element={<AlertsPage />} />
         <Route path="/alerts/settings" element={<AlertSettingsPage />} /> */}
