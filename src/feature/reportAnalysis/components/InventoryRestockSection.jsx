@@ -9,20 +9,71 @@ import {
   Tooltip,
   CartesianGrid,
 } from 'recharts';
+import CustomTable from '../../../components/CustomTable';
 
 const lowStockAlerts = [
-  { category: 'Makeup', product: 'Lipstick', stockLevel: '2 units', status: 'Critical' },
-  { category: 'Haircare', product: 'Hair Mask', stockLevel: '6 units', status: 'Low Stock' },
-  { category: 'Skincare', product: 'Sunscreen', stockLevel: '5 units', status: 'In Stock' },
-  { category: 'Makeup', product: 'Sunscreen', stockLevel: '3 units', status: 'Low Stock' },
-  { category: 'Makeup', product: 'Sunscreen', stockLevel: '5 units', status: 'In Stock' },
+  { id: 1, category: 'Makeup', product: 'Lipstick', stockLevel: '2 units', status: 'Critical' },
+  { id: 2, category: 'Haircare', product: 'Hair Mask', stockLevel: '6 units', status: 'Low Stock' },
+  { id: 3, category: 'Skincare', product: 'Sunscreen', stockLevel: '5 units', status: 'In Stock' },
+  { id: 4, category: 'Makeup', product: 'Sunscreen', stockLevel: '3 units', status: 'Low Stock' },
+  { id: 5, category: 'Makeup', product: 'Sunscreen', stockLevel: '5 units', status: 'In Stock' },
 ];
 
 const statusStyles = {
-  Critical: 'bg-[#FFE4EE] text-[#F8069D]',
-  'Low Stock': 'bg-[#FFF4E5] text-[#F59E0B]',
-  'In Stock': 'bg-[#E6F8F0] text-[#22C55E]',
+  Critical: { backgroundColor: 'rgba(248, 6, 157, 0.1)', color: '#F8069D' },
+  'Low Stock': { backgroundColor: 'rgba(245, 158, 11, 0.1)', color: '#F59E0B' },
+  'In Stock': { backgroundColor: 'rgba(34, 197, 94, 0.1)', color: '#22C55E' },
 };
+
+const inventoryColumns = [
+  {
+    id: 'rank',
+    label: '#',
+    render: (row) => {
+      // Use the id to determine rank
+      return `0${row.id}`;
+    },
+  },
+  {
+    id: 'category',
+    label: 'Category',
+  },
+  {
+    id: 'product',
+    label: 'Product Name',
+  },
+  {
+    id: 'stockLevel',
+    label: 'Stock Level',
+  },
+  {
+    id: 'status',
+    label: 'Status',
+    render: (row) => (
+      <span
+        style={{
+          padding: '4px 12px',
+          borderRadius: '999px',
+          fontSize: '12px',
+          fontWeight: 600,
+          ...statusStyles[row.status],
+        }}
+      >
+        {row.status}
+      </span>
+    ),
+  },
+  {
+    id: 'action',
+    label: 'Action',
+    align: 'right',
+    render: () => (
+      <button className="p-2 rounded-full hover:bg-gray-100">
+        <Icon icon="mdi:dots-vertical" width={18} height={18} className="text-gray-500" />
+      </button>
+    ),
+  },
+];
 
 const inventoryTrends = [
   { label: 'Lipstick', value: 5200 },
@@ -42,58 +93,35 @@ const filters = ['Today', 'This Week', 'This Month', 'This Year'];
 const InventoryRestockSection = () => {
   const [activeFilter, setActiveFilter] = useState('Today');
 
-  return (
-    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 space-y-6">
-      <div className="flex items-start justify-between">
+  return (<>
+    <div className="flex items-start justify-between">
         <div>
           <h2 className="text-lg font-semibold text-gray-900">Inventory and Restock Trend Analysis</h2>
           <p className="text-sm text-gray-500">Low Stock Alerts</p>
         </div>
         <div className="flex items-center gap-4">
-          <button className="text-sm font-semibold text-[#F8069D]">See all</button>
+        
           <button className="inline-flex items-center gap-2 text-sm font-semibold text-gray-600">
             <Icon icon="mdi:filter-outline" width={18} height={18} />
             Filter
           </button>
         </div>
       </div>
+    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 space-y-6">
+    
 
-      <div className="overflow-x-auto border border-gray-100 rounded-2xl">
-        <table className="min-w-full text-sm">
-          <thead>
-            <tr className="text-left text-gray-500 border-b border-gray-100">
-              <th className="py-3 px-4 font-semibold">#</th>
-              <th className="py-3 px-4 font-semibold">Category</th>
-              <th className="py-3 px-4 font-semibold">Product Name</th>
-              <th className="py-3 px-4 font-semibold">Stock Level</th>
-              <th className="py-3 px-4 font-semibold">Status</th>
-              <th className="py-3 px-4 font-semibold text-right">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {lowStockAlerts.map((item, index) => (
-              <tr key={`${item.product}-${index}`} className="border-b border-gray-100 last:border-transparent">
-                <td className="py-4 px-4 text-gray-500">0{index + 1}</td>
-                <td className="py-4 px-4 font-semibold text-gray-900">{item.category}</td>
-                <td className="py-4 px-4 text-gray-700">{item.product}</td>
-                <td className="py-4 px-4 text-gray-700">{item.stockLevel}</td>
-                <td className="py-4 px-4">
-                  <span className={`px-3 py-1 rounded-full text-xs font-semibold ${statusStyles[item.status]}`}>
-                    {item.status}
-                  </span>
-                </td>
-                <td className="py-4 px-4 text-right">
-                  <button className="p-2 rounded-full hover:bg-gray-100">
-                    <Icon icon="mdi:dots-vertical" width={18} height={18} className="text-gray-500" />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="border border-gray-100 rounded-2xl">
+        <CustomTable
+          columns={inventoryColumns}
+          rows={lowStockAlerts}
+          rowsPerPageOptions={[5, 10]}
+          defaultRowsPerPage={5}
+        />
       </div>
 
-      <div className="border border-gray-100 rounded-2xl p-5">
+     
+    </div>
+     <div className="border border-gray-100 rounded-2xl p-5 bg-white shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
           <p className="text-base font-semibold text-gray-900">Inventory Trends Graph</p>
           <div className="flex items-center gap-2 rounded-full border border-gray-200 p-1">
@@ -135,10 +163,12 @@ const InventoryRestockSection = () => {
           </ResponsiveContainer>
         </div>
       </div>
-    </div>
+    
+    </>
   );
 };
 
 export default InventoryRestockSection;
+
 
 

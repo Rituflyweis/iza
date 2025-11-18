@@ -143,11 +143,11 @@ const AppRoutes = () => {
         <Route path="/third-party-integration/shipping-provider" element={<ShippingProviderPage />} />
         <Route path="/third-party-integration/shipping-provider/add" element={<AddShippingPage />} />
         <Route path="/third-party-integration/shipping-provider/configure/:id" element={<ConfigureShippingProviderPage />} />
-        <Route path="/reviews-feedback" element={<ReviewsFeedbackPage />} />
+        {/* <Route path="/reviews-feedback" element={<ReviewsFeedbackPage />} />
         <Route path="/vendor-management" element={<VendorManagementPage />} />
-        <Route path="/vendor-management/form" element={<ViewVendorFormPage />} />
-        {/* <Route path="/report-analysis" element={<ReportAnalysisPage />} /> */}
-        {/* <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/vendor-management/form" element={<ViewVendorFormPage />} /> */}
+        <Route path="/report-analysis" element={<ReportAnalysisPage />} /> 
+{/* <Route path="/settings" element={<SettingsPage />} />
         <Route path="/settings/general" element={<GeneralSettingsPage />} />
         <Route path="/settings/payment" element={<PaymentSettingsPage />} />
         <Route path="/settings/tax-rules" element={<TaxRulesPage />} />
@@ -156,7 +156,7 @@ const AppRoutes = () => {
         <Route path="/settings/loyalty-rewards/new/program" element={<AddLoyaltyProgramPage />} />
         <Route path="/settings/loyalty-rewards/new/reward-tier" element={<AddRewardTierPage />} />
         <Route path="/settings/admin-roles" element={<AdminRolesPage />} />
-        <Route path="/settings/admin-roles/new" element={<AddAdminRolePage />} /> */}
+        <Route path="/settings/admin-roles/new" element={<AddAdminRolePage />} />  */}
         {/* Add more routes here as you create new features */}
       </Routes>
     </BrowserRouter>

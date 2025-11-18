@@ -8,7 +8,6 @@ import ProfitLossSection from './components/ProfitLossSection';
 import CategoryPerformanceSection from './components/CategoryPerformanceSection';
 import InventoryRestockSection from './components/InventoryRestockSection';
 import CampaignROISection from './components/CampaignROISection';
-import TopLeastPerformingProductsSection from './components/TopLeastPerformingProductsSection';
 import TopProductSalesSection from './components/TopProductSalesSection';
 import LeastProductSalesSection from './components/LeastProductSalesSection';
 
@@ -25,7 +24,6 @@ const ReportAnalysis = () => {
       <CategoryPerformanceSection />
       <InventoryRestockSection />
       <CampaignROISection />
-      <TopLeastPerformingProductsSection />
       <TopProductSalesSection />
       <LeastProductSalesSection />
     </div>

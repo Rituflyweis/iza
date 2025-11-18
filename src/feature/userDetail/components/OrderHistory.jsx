@@ -2,6 +2,8 @@ import { Box, Button, IconButton } from '@mui/material';
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { FilterOffcanvas } from '../../../components';
+import OrderHistoryFilterBody from './OrderHistoryFilterBody';
 
 const rows = [
   { id: '123455', product: 'Lipstick', date: 'DD-MM-YYYY', quantity: 1, price: 'Rs.333', payment: 'Paid', status: 'Delivered' },
@@ -36,8 +38,43 @@ const StatusBadge = ({ label }) => {
 
 const OrderHistory = () => {
   const [expandedIndex, setExpandedIndex] = useState(null);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [filterData, setFilterData] = useState({
+    status: [],
+    paymentStatus: [],
+    months: [],
+    year: '',
+    startDate: '',
+    endDate: '',
+  });
   const navigate = useNavigate();
   const { id } = useParams();
+
+  const handleFilter = () => {
+    setFilterOpen(true);
+  };
+
+  const handleFilterChange = (newFilterData) => {
+    setFilterData(newFilterData);
+  };
+
+  const handleResetFilters = () => {
+    setFilterData({
+      status: [],
+      paymentStatus: [],
+      months: [],
+      year: '',
+      startDate: '',
+      endDate: '',
+    });
+  };
+
+  const handleApplyFilters = () => {
+    console.log('Applied filters:', filterData);
+    // Implement filter logic here
+    // You can use filterData to filter the rows
+  };
+
   return (
     <Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: '1rem' }}>
@@ -48,7 +85,7 @@ const OrderHistory = () => {
           <Box component="span" sx={{ fontWeight: 700, color: '#1A1A1A' }}>Order History</Box>
         </Box>
         <Box sx={{ display: 'flex', gap: '0.5rem' }}>
-          <Button variant="contained" startIcon={<Icon icon="mdi:filter" width={18} height={18} color="#fff" />} sx={{ textTransform: 'none', bgcolor: '#F8069D', '&:hover': { bgcolor: '#C1057D' } }}>Filter</Button>
+          <Button variant="contained" startIcon={<Icon icon="mdi:filter" width={18} height={18} color="#fff" />} onClick={handleFilter} sx={{ textTransform: 'none', bgcolor: '#F8069D', '&:hover': { bgcolor: '#C1057D' } }}>Filter</Button>
           <Button variant="contained" startIcon={<Icon icon="mdi:export-variant" width={18} height={18} color="#fff" />} sx={{ textTransform: 'none', bgcolor: '#F8069D', '&:hover': { bgcolor: '#C1057D' } }}>Export</Button>
         </Box>
       </Box>
@@ -179,6 +216,20 @@ const OrderHistory = () => {
           ))}
         </Box>
       </Box>
+
+      {/* Filter Offcanvas */}
+      <FilterOffcanvas
+        open={filterOpen}
+        onClose={() => setFilterOpen(false)}
+        onReset={handleResetFilters}
+        onApply={handleApplyFilters}
+        title="Filter"
+      >
+        <OrderHistoryFilterBody
+          filterData={filterData}
+          onFilterChange={handleFilterChange}
+        />
+      </FilterOffcanvas>
     </Box>
   );
 };

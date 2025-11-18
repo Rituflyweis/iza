@@ -1,11 +1,43 @@
 import { Icon } from '@iconify/react';
+import CustomTable from '../../../components/CustomTable';
 
 const customerRows = [
-  { name: 'Livia Rheil Madsen', orders: 10, spent: '₹ 720', cancelled: 2, returned: 0 },
-  { name: 'Livia Vaccaro', orders: 20, spent: '₹ 720', cancelled: 2, returned: 0 },
-  { name: 'Jordyn Bargson', orders: 10, spent: '₹ 720', cancelled: 2, returned: 0 },
-  { name: 'Abram Cattoni', orders: 10, spent: '₹ 720', cancelled: 2, returned: 0 },
-  { name: 'Tatiana Saris', orders: 10, spent: '₹ 720', cancelled: 2, returned: 0 },
+  { id: 1, name: 'Livia Rheil Madsen', orders: 10, spent: '₹ 720', cancelled: 2, returned: 0 },
+  { id: 2, name: 'Livia Vaccaro', orders: 20, spent: '₹ 720', cancelled: 2, returned: 0 },
+  { id: 3, name: 'Jordyn Bargson', orders: 10, spent: '₹ 720', cancelled: 2, returned: 0 },
+  { id: 4, name: 'Abram Cattoni', orders: 10, spent: '₹ 720', cancelled: 2, returned: 0 },
+  { id: 5, name: 'Tatiana Saris', orders: 10, spent: '₹ 720', cancelled: 2, returned: 0 },
+];
+
+const customerColumns = [
+  {
+    id: 'rank',
+    label: '#',
+    render: (row) => {
+      // Use the id to determine rank
+      return `0${row.id}`;
+    },
+  },
+  {
+    id: 'name',
+    label: 'Customer Name',
+  },
+  {
+    id: 'orders',
+    label: 'Total Orders',
+  },
+  {
+    id: 'spent',
+    label: 'Total Spent',
+  },
+  {
+    id: 'cancelled',
+    label: 'Total Cancelled',
+  },
+  {
+    id: 'returned',
+    label: 'Total Returned',
+  },
 ];
 
 const CustomerReportsSection = () => {
@@ -25,32 +57,12 @@ const CustomerReportsSection = () => {
         </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full text-sm">
-          <thead>
-            <tr className="text-left text-gray-500 border-b border-gray-100">
-              <th className="py-3 font-semibold">#</th>
-              <th className="py-3 font-semibold">Customer Name</th>
-              <th className="py-3 font-semibold">Total Orders</th>
-              <th className="py-3 font-semibold">Total Spent</th>
-              <th className="py-3 font-semibold">Total Cancelled</th>
-              <th className="py-3 font-semibold">Total Returned</th>
-            </tr>
-          </thead>
-          <tbody>
-            {customerRows.map((row, index) => (
-              <tr key={row.name} className="border-b border-gray-100 last:border-transparent">
-                <td className="py-3 text-gray-500">0{index + 1}</td>
-                <td className="py-3 font-semibold text-gray-900">{row.name}</td>
-                <td className="py-3 text-gray-700">{row.orders}</td>
-                <td className="py-3 text-gray-900">{row.spent}</td>
-                <td className="py-3 text-gray-700">{row.cancelled}</td>
-                <td className="py-3 text-gray-700">{row.returned}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <CustomTable
+        columns={customerColumns}
+        rows={customerRows}
+        rowsPerPageOptions={[5, 10]}
+        defaultRowsPerPage={5}
+      />
     </div>
   );
 };

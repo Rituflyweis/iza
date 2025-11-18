@@ -9,6 +9,7 @@ import {
   Tooltip,
   CartesianGrid,
 } from 'recharts';
+import CustomTable from '../../../components/CustomTable';
 
 const topSalesData = [
   { month: 'Jan', value: 4600 },
@@ -25,12 +26,41 @@ const topSalesData = [
   { month: 'Dec', value: 5400 },
 ];
 
-const leastPerformingProducts = [
-  { product: 'Matte Finish Foundation', sales: '$2,500', rating: 45, engagement: '900 views', returned: 0 },
-  { product: 'Matte Finish Foundation', sales: '$2,500', rating: 45, engagement: '900 views', returned: 0 },
-  { product: 'Matte Finish Foundation', sales: '$2,500', rating: 45, engagement: '900 views', returned: 0 },
-  { product: 'Matte Finish Foundation', sales: '$2,500', rating: 45, engagement: '900 views', returned: 0 },
-  { product: 'Matte Finish Foundation', sales: '$2,500', rating: 45, engagement: '900 views', returned: 0 },
+const topProducts = [
+  { id: 'tp-1', rank: 1, product: 'Radiant Glow Serum', sales: '$12,500', rating: 85, engagement: '2,100 views', returned: 12 },
+  { id: 'tp-2', rank: 2, product: 'Hydra Matte Lipstick', sales: '$10,430', rating: 82, engagement: '1,980 views', returned: 6 },
+  { id: 'tp-3', rank: 3, product: 'Velvet Touch Blush', sales: '$9,860', rating: 79, engagement: '1,720 views', returned: 3 },
+  { id: 'tp-4', rank: 4, product: 'Silk Finish Foundation', sales: '$8,540', rating: 75, engagement: '1,610 views', returned: 9 },
+  { id: 'tp-5', rank: 5, product: 'Ultra Define Kajal', sales: '$7,120', rating: 71, engagement: '1,420 views', returned: 4 },
+];
+
+const productColumns = [
+  {
+    id: 'rank',
+    label: '#',
+    format: (value) => value.toString().padStart(2, '0'),
+  },
+  {
+    id: 'product',
+    label: 'Product',
+  },
+  {
+    id: 'sales',
+    label: 'Sales',
+  },
+  {
+    id: 'rating',
+    label: 'Rating',
+    format: (value) => `${value}%`,
+  },
+  {
+    id: 'engagement',
+    label: 'Engagement',
+  },
+  {
+    id: 'returned',
+    label: 'Total Returned',
+  },
 ];
 
 const filters = ['Today', 'This Week', 'This Month', 'This Year'];
@@ -39,15 +69,29 @@ const TopProductSalesSection = () => {
   const [activeFilter, setActiveFilter] = useState('Today');
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-gray-900">Top Product Sales</h2>
+    <>
+       <div className="flex items-center justify-between">
+        <h2 className="text-lg font-semibold text-gray-900">Top And Least Performing Products</h2>
         <button className="inline-flex items-center gap-2 text-sm font-semibold text-gray-600">
           <Icon icon="mdi:filter-outline" width={18} height={18} />
           Filter
         </button>
       </div>
-
+    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 space-y-6">
+      <div className="space-y-3">
+        <div className="flex items-start justify-between">
+          <p className="text-base font-semibold text-gray-900">Top Performing Products</p>
+          <button className="text-sm font-semibold text-[#F8069D]">See all</button>
+        </div>
+        <CustomTable
+          columns={productColumns}
+          rows={topProducts}
+          rowsPerPageOptions={[5]}
+          defaultRowsPerPage={5}
+        />
+      </div>
+      </div>
+ <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <p className="text-base font-semibold text-gray-800">Top Product Sales</p>
         <div className="flex items-center gap-2 rounded-full border border-gray-200 p-1">
@@ -90,51 +134,12 @@ const TopProductSalesSection = () => {
         </ResponsiveContainer>
       </div>
 
-      <div>
-        <div className="flex items-start justify-between mb-3">
-          <div>
-            <p className="text-base font-semibold text-gray-900">Least Performing Products</p>
-          </div>
-          <button className="text-sm font-semibold text-[#F8069D]">See all</button>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="min-w-full text-sm">
-            <thead>
-              <tr className="text-left text-gray-500 border-b border-gray-100">
-                <th className="py-3 font-semibold">#</th>
-                <th className="py-3 font-semibold">Product</th>
-                <th className="py-3 font-semibold">Sales</th>
-                <th className="py-3 font-semibold">Rating</th>
-                <th className="py-3 font-semibold">Engagement</th>
-                <th className="py-3 font-semibold">Total Returned</th>
-              </tr>
-            </thead>
-            <tbody>
-              {leastPerformingProducts.map((product, index) => (
-                <tr key={`${product.product}-${index}`} className="border-b border-gray-100 last:border-transparent">
-                  <td className="py-3 text-gray-500">0{index + 1}</td>
-                  <td className="py-3 font-semibold text-gray-900">{product.product}</td>
-                  <td className="py-3 text-gray-700">{product.sales}</td>
-                  <td className="py-3 text-gray-700">
-                    <div className="flex items-center gap-3 w-32">
-                      <div className="flex-1 h-1.5 bg-gray-100 rounded-full">
-                        <div className="h-full rounded-full bg-[#F8069D]" style={{ width: `${product.rating}%` }} />
-                      </div>
-                      <span className="text-sm font-semibold text-gray-900">{product.rating}</span>
-                    </div>
-                  </td>
-                  <td className="py-3 text-gray-700">{product.engagement}</td>
-                  <td className="py-3 text-gray-700">{product.returned}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  );
+   </div>
+ 
+  </>);
 };
 
 export default TopProductSalesSection;
+
 
 
