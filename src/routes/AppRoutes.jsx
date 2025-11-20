@@ -107,8 +107,9 @@ const AppRoutes = () => {
         <Route path="/notification/new/whatsapp" element={<AddWhatsappPage />} />
         {/* 
        
-        <Route path="/alerts" element={<AlertsPage />} />
-        <Route path="/alerts/settings" element={<AlertSettingsPage />} /> */}
+       */}
+         <Route path="/alerts" element={<AlertsPage />} />
+        <Route path="/alerts/settings" element={<AlertSettingsPage />} />
         <Route path="/offers-management" element={<OffersManagementPage />} />
         <Route path="/inventory" element={<InventoryManagementPage />} />
         <Route path="/inventory/add" element={<AddInventoryPage />} />

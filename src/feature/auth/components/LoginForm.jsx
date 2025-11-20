@@ -23,6 +23,7 @@ const LoginForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Login:', formData);
+    navigate("/dashboard")
     // Implement login logic here
   };
 
@@ -58,7 +59,7 @@ const LoginForm = () => {
         placeholder="Enter email"
         value={formData.email}
         onChange={handleChange}
-        required
+        // required
       />
 
       <CustomInput
@@ -68,7 +69,7 @@ const LoginForm = () => {
         placeholder="Enter Password"
         value={formData.password}
         onChange={handleChange}
-        required
+        // required
         showPasswordToggle
         showPassword={showPassword}
         onTogglePassword={() => setShowPassword(!showPassword)}
