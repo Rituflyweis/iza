@@ -3,13 +3,21 @@ import { useState } from 'react';
 import { FilterOffcanvas } from '../../../components';
 import OrderFilterBody from './OrderFilterBody';
 
-const OrderManagementHeading = () => {
+const OrderManagementHeading = ({
+  filterData,
+  onFilterChange,
+  onFilterApply,
+  onFilterReset,
+}) => {
   const [filterOpen, setFilterOpen] = useState(false);
-  const [filterData, setFilterData] = useState({
+  const [localFilterData, setLocalFilterData] = useState(filterData || {
     list: '',
     status: [],
     paymentType: [],
     months: [],
+    year: '',
+    fromDate: '',
+    toDate: '',
   });
 
   const handleFilter = () => {
@@ -17,23 +25,36 @@ const OrderManagementHeading = () => {
   };
 
   const handleFilterChange = (newFilterData) => {
-    setFilterData(newFilterData);
+    setLocalFilterData(newFilterData);
+    if (onFilterChange) {
+      onFilterChange(newFilterData);
+    }
   };
 
   const handleResetFilters = () => {
-    setFilterData({
+    const resetData = {
       list: '',
       status: [],
       paymentType: [],
       months: [],
-    });
+      year: '',
+      fromDate: '',
+      toDate: '',
+    };
+    setLocalFilterData(resetData);
+    if (onFilterReset) {
+      onFilterReset();
+    }
+    setFilterOpen(false);
   };
 
   const handleApplyFilters = () => {
-    console.log('Applied filters:', filterData);
-    // Implement filter logic here
-    // You can pass filterData to your table component or API call
+    if (onFilterApply) {
+      onFilterApply(localFilterData);
+    }
+    setFilterOpen(false);
   };
+
 
   return (
     <div className="mb-8">
@@ -47,13 +68,15 @@ const OrderManagementHeading = () => {
           </p>
         </div>
 
-        <button
-          onClick={handleFilter}
-          className="bg-[#F8069D] hover:bg-[#C1057D] text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition flex items-center gap-2"
-        >
-          <Icon icon="mdi:filter" width="18" height="18" />
-          Filter
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={handleFilter}
+            className="bg-[#F8069D] hover:bg-[#C1057D] text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition flex items-center gap-2"
+          >
+            <Icon icon="mdi:filter" width="18" height="18" />
+            Filter
+          </button>
+        </div>
       </div>
 
       {/* Filter Offcanvas */}
@@ -65,7 +88,7 @@ const OrderManagementHeading = () => {
         title="Filter"
       >
         <OrderFilterBody
-          filterData={filterData}
+          filterData={localFilterData}
           onFilterChange={handleFilterChange}
         />
       </FilterOffcanvas>

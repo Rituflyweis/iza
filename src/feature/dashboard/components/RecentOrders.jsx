@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 const orders = [
   { product: 'Lipstick Care Balm', orderId: '123456789', status: 'Completed', color: '#22C55E' },
   { product: 'Lipstick Care Balm', orderId: '123456789', status: 'Pending', color: '#F59E0B' },
@@ -7,11 +9,16 @@ const orders = [
 ];
 
 const RecentOrders = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
       <div className="mb-4 flex items-center justify-between">
         <h3 className="text-lg font-semibold text-gray-900">Recent Orders</h3>
-        <button className="text-xs font-semibold text-pink-600 hover:text-pink-700">
+        <button 
+          onClick={() => navigate('/dashboard/recent-orders')}
+          className="text-xs font-semibold text-pink-600 hover:text-pink-700"
+        >
           See all orders
         </button>
       </div>

@@ -6,12 +6,14 @@ const CustomInput = ({
   type = 'text',
   value,
   onChange,
+  onBlur,
   name,
   placeholder = '',
   required = false,
   showPasswordToggle = false,
   showPassword = false,
   onTogglePassword,
+  error,
   className = '',
   sx = {},
   ...props
@@ -27,9 +29,14 @@ const CustomInput = ({
           name={name}
           value={value}
           onChange={onChange}
+          onBlur={onBlur}
           placeholder={placeholder}
           required={required}
-          className="w-full px-4 py-[0.875rem] border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors"
+          className={`w-full px-4 py-[0.875rem] border-2 rounded-lg focus:outline-none focus:ring-2 transition-colors ${
+            error
+              ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+              : 'border-gray-200 focus:ring-pink-500 focus:border-pink-500'
+          }`}
           {...props}
         />
         {showPasswordToggle && (
@@ -42,6 +49,7 @@ const CustomInput = ({
           </button>
         )}
       </Box>
+      {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
     </Box>
   );
 };

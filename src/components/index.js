@@ -7,5 +7,8 @@ export { default as CustomInput } from './CustomInput';
 export { default as FilterOffcanvas } from './FilterOffcanvas';
 export { default as DeleteModal } from './DeleteModal';
 export { default as GradientOverviewCards } from './GradientOverviewCards';
+export { default as AddProductChooser } from './AddProductChooser';
+export { default as ProfileModal } from './ProfileModal';
+export { default as Loader } from './Loader';
 
 

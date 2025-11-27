@@ -1,10 +1,48 @@
 import { Box, Typography, Button } from '@mui/material';
 import { Icon } from '@iconify/react';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { FilterOffcanvas } from '../../../components';
+import OffersFilterBody from './OffersFilterBody';
 
 const OffersManagementHeading = () => {
   const navigate = useNavigate();
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [filterData, setFilterData] = useState({
+    types: [],
+    status: [],
+    discountTypes: [],
+    offerCode: '',
+    startDate: '',
+    endDate: '',
+  });
+
   const handleAddNew = () => navigate('/offers-management/add-offer');
+
+  const handleFilter = () => {
+    setFilterOpen(true);
+  };
+
+  const handleFilterChange = (newFilterData) => {
+    setFilterData(newFilterData);
+  };
+
+  const handleResetFilters = () => {
+    setFilterData({
+      types: [],
+      status: [],
+      discountTypes: [],
+      offerCode: '',
+      startDate: '',
+      endDate: '',
+    });
+  };
+
+  const handleApplyFilters = () => {
+    console.log('Applied filters:', filterData);
+    // Implement filter logic here
+    // You can pass filterData to your table component or API call
+  };
 
   return (
     <Box sx={{ mb: '2rem' }}>
@@ -35,6 +73,27 @@ const OffersManagementHeading = () => {
         <Box sx={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
           <Button
             variant="contained"
+            onClick={handleFilter}
+            sx={{
+              bgcolor: '#F8069D',
+              color: '#fff',
+              textTransform: 'none',
+              px: '1.5rem',
+              py: '0.625rem',
+              borderRadius: '0.5rem',
+              fontSize: '0.875rem',
+              fontWeight: 600,
+              '&:hover': {
+                bgcolor: '#C1057D',
+              },
+            }}
+          >
+            <Icon icon="mdi:filter" width="18" height="18" style={{ marginRight: '0.5rem' }} />
+            Filter
+          </Button>
+
+          <Button
+            variant="contained"
             onClick={handleAddNew}
             sx={{
               bgcolor: '#F8069D',
@@ -55,6 +114,20 @@ const OffersManagementHeading = () => {
           </Button>
         </Box>
       </Box>
+
+      {/* Filter Offcanvas */}
+      <FilterOffcanvas
+        open={filterOpen}
+        onClose={() => setFilterOpen(false)}
+        onReset={handleResetFilters}
+        onApply={handleApplyFilters}
+        title="Filter"
+      >
+        <OffersFilterBody
+          filterData={filterData}
+          onFilterChange={handleFilterChange}
+        />
+      </FilterOffcanvas>
     </Box>
   );
 };

@@ -11,6 +11,7 @@ const menuItems = [
     label: 'User Management',
     path: '/user-management',
     icon: 'mdi:account-group',
+    matchPaths: ['/user-management', '/user-detail', '/create-user'],
   },
   {
     id: 'product-management',

@@ -58,11 +58,18 @@ const renderMetricIcon = (icon) => {
   return icon;
 };
 
+const actionVariants = {
+  primary: 'bg-pink-500 text-white shadow hover:bg-pink-600',
+  secondary: 'border border-pink-500 text-pink-500 hover:bg-pink-50',
+  ghost: 'border border-gray-200 text-gray-600 hover:bg-gray-50',
+};
+
 const GradientOverviewCards = ({
   activeFilter,
   onFilterChange,
   metrics,
   filters = timeFilters,
+  actions = [],
   title = 'Overview',
   subtitle = 'Track performance at a glance',
 }) => {
@@ -79,11 +86,35 @@ const GradientOverviewCards = ({
           {subtitle && <p className="text-sm text-gray-400">{subtitle}</p>}
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          {filters.map((filter) => (
+          {actions.map((action) => (
+            <button
+              key={action.id ?? action.label}
+              type="button"
+              onClick={action.onClick}
+              className={`flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold transition ${actionVariants[action.variant ?? 'ghost']}`}
+            >
+              {action.icon && action.iconPosition !== 'right' && (
+                typeof action.icon === 'string' ? (
+                  <Icon icon={action.icon} width={16} height={16} />
+                ) : (
+                  action.icon
+                )
+              )}
+              <span>{action.label}</span>
+              {action.icon && action.iconPosition === 'right' && (
+                typeof action.icon === 'string' ? (
+                  <Icon icon={action.icon} width={16} height={16} />
+                ) : (
+                  action.icon
+                )
+              )}
+            </button>
+          ))}
+          {filters?.map((filter) => (
             <button
               key={filter}
               onClick={() => onFilterChange?.(filter)}
-              className={`rounded-full px-4 py-2 text-xs font-semibold transition ${
+              className={`rounded-xl px-4 py-2 text-xs font-semibold transition ${
                 activeFilter === filter ? activeFilterClass : inactiveFilterClass
               }`}
             >

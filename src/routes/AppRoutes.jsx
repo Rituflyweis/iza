@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
 import LoginPage from '../pages/LoginPage';
 import ForgotPasswordPage from '../pages/ForgotPasswordPage';
 import OTPPage from '../pages/OTPPage';
@@ -25,6 +24,10 @@ import EditProductPage from '../pages/EditProductPage';
 import OrderManagementPage from '../pages/OrderManagementPage';
 import OrderDetailPage from '../pages/OrderDetailPage';
 import TransactionManagementPage from '../pages/TransactionManagementPage';
+import TopSellingProductsPage from '../pages/TopSellingProductsPage';
+import RecentOrdersPage from '../pages/RecentOrdersPage';
+import TrendingItemsPage from '../pages/TrendingItemsPage';
+import InventoryStatusPage from '../pages/InventoryStatusPage';
 import VideoManagementPage from '../pages/VideoManagementPage';
 import AddVideoPage from '../pages/AddVideoPage';
 import OffersManagementPage from '../pages/OffersManagementPage';
@@ -82,6 +85,10 @@ const AppRoutes = () => {
         <Route path="/verify-otp" element={<OTPPage />} />
 
         {/* Dashboard Routes */}
+        <Route path="/dashboard/top-selling-products" element={<TopSellingProductsPage />} />
+        <Route path="/dashboard/recent-orders" element={<RecentOrdersPage />} />
+        <Route path="/dashboard/trending-items" element={<TrendingItemsPage />} />
+        <Route path="/dashboard/inventory-status" element={<InventoryStatusPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/user-management" element={<UserManagementPage />} />
         <Route path="/create-user" element={<CreateUserPage />} />
@@ -108,7 +115,7 @@ const AppRoutes = () => {
         {/* 
        
        */}
-         <Route path="/alerts" element={<AlertsPage />} />
+        <Route path="/alerts" element={<AlertsPage />} />
         <Route path="/alerts/settings" element={<AlertSettingsPage />} />
         <Route path="/offers-management" element={<OffersManagementPage />} />
         <Route path="/inventory" element={<InventoryManagementPage />} />
@@ -147,8 +154,8 @@ const AppRoutes = () => {
         <Route path="/reviews-feedback" element={<ReviewsFeedbackPage />} />
         <Route path="/vendor-management" element={<VendorManagementPage />} />
         <Route path="/vendor-management/form" element={<ViewVendorFormPage />} />
-        <Route path="/report-analysis" element={<ReportAnalysisPage />} /> 
-<Route path="/settings" element={<SettingsPage />} />
+        <Route path="/report-analysis" element={<ReportAnalysisPage />} />
+        <Route path="/settings" element={<SettingsPage />} />
         <Route path="/settings/general" element={<GeneralSettingsPage />} />
         <Route path="/settings/payment" element={<PaymentSettingsPage />} />
         <Route path="/settings/tax-rules" element={<TaxRulesPage />} />
@@ -157,7 +164,7 @@ const AppRoutes = () => {
         <Route path="/settings/loyalty-rewards/new/program" element={<AddLoyaltyProgramPage />} />
         <Route path="/settings/loyalty-rewards/new/reward-tier" element={<AddRewardTierPage />} />
         <Route path="/settings/admin-roles" element={<AdminRolesPage />} />
-        <Route path="/settings/admin-roles/new" element={<AddAdminRolePage />} /> 
+        <Route path="/settings/admin-roles/new" element={<AddAdminRolePage />} />
         {/* Add more routes here as you create new features */}
       </Routes>
     </BrowserRouter>

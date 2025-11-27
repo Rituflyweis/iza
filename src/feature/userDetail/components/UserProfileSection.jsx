@@ -1,7 +1,34 @@
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { Icon } from '@iconify/react';
+import { getFullName } from '../../../utils/constants';
 
-const UserProfileSection = () => {
+const UserProfileSection = ({ userData, loading }) => {
+  if (loading) {
+    return (
+      <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+        <Typography className="text-center py-8">Loading user details...</Typography>
+      </div>
+    );
+  }
+
+  if (!userData) {
+    return (
+      <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+        <Typography className="text-center py-8 text-gray-500">No user data available</Typography>
+      </div>
+    );
+  }
+
+  const fullName = getFullName(userData.firstName, userData.lastName);
+  const phoneNumber = userData.mobileNumber 
+    ? `${userData.countryCode || ''} ${userData.mobileNumber}`.trim() 
+    : '-';
+  const userId = userData._id || userData.id || '-';
+  const email = userData.email || '-';
+  const userType = userData.userType || 'USER';
+  const address = userData.address || userData.location?.address || '-';
+  const membership = userData.isSubscription ? 'Premium Membership' : 'Standard Membership';
+
   return (
     <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -23,16 +50,16 @@ const UserProfileSection = () => {
             <label className="block text-sm font-semibold text-[#5A6678] mb-2">Name</label>
             <input
               type="text"
-              value="Marie Willson"
+              value={fullName}
               disabled
-              className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors"
+              className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors capitalize"
             />
           </div>
           <div>
             <label className="block text-sm font-semibold text-[#5A6678] mb-2">User ID</label>
             <input
               type="text"
-              value="123345"
+              value={userId}
               disabled
               className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors"
             />
@@ -43,7 +70,7 @@ const UserProfileSection = () => {
             <label className="block text-sm font-semibold text-[#5A6678] mb-2">Phone Number</label>
             <input
               type="text"
-              value="555-234-1289"
+              value={phoneNumber}
               disabled
               className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors"
             />
@@ -52,7 +79,7 @@ const UserProfileSection = () => {
             <label className="block text-sm font-semibold text-[#5A6678] mb-2">Assign Role</label>
             <input
               type="text"
-              value="Admin"
+              value={userType}
               disabled
               className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors"
             />
@@ -63,7 +90,7 @@ const UserProfileSection = () => {
             <label className="block text-sm font-semibold text-[#5A6678] mb-2">Email</label>
             <input
               type="email"
-              value="abc@gmail.com"
+              value={email}
               disabled
               className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors"
             />
@@ -74,7 +101,7 @@ const UserProfileSection = () => {
             <label className="block text-sm font-semibold text-[#5A6678] mb-2">Address</label>
             <input
               type="text"
-              value="Lorem Ipsum"
+              value={address}
               disabled
               className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors"
             />
@@ -84,7 +111,7 @@ const UserProfileSection = () => {
             <div className="relative">
               <input
                 type="text"
-                value="Platinum Membership"
+                value={membership}
                 disabled
                 className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors pl-10"
               />

@@ -1,4 +1,5 @@
 import { Icon } from '@iconify/react';
+import { useNavigate } from 'react-router-dom';
 import {
   TableContainer,
   Table,
@@ -17,19 +18,23 @@ const trendingItems = [
 ];
 
 const TrendingItemsCard = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
       <div className="mb-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <h3 className="text-lg font-semibold text-gray-900">Trending Items</h3>
-          <span className="text-xs text-gray-400">Today</span>
-        </div>
+        <h3 className="text-lg font-semibold text-gray-900">Trending Items</h3>
         <div className="flex items-center gap-3 text-sm text-gray-500">
           <button className="inline-flex items-center gap-1 rounded-full border border-gray-200 bg-white px-4 py-1.5 text-sm font-semibold text-gray-600 hover:border-pink-500 hover:text-pink-600">
             <Icon icon="mdi:filter-variant" width={16} height={16} />
             Filter
           </button>
-          <button className="text-xs font-semibold text-pink-600 hover:text-pink-700">See all</button>
+          <button 
+            onClick={() => navigate('/dashboard/trending-items')}
+            className="text-xs font-semibold text-pink-600 hover:text-pink-700"
+          >
+            See all
+          </button>
         </div>
       </div>
 

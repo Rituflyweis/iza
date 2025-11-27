@@ -13,7 +13,7 @@ import LeastProductSalesSection from './components/LeastProductSalesSection';
 
 const ReportAnalysis = () => {
   return (
-    <div className="bg-gray-50 min-h-screen p-6 space-y-6">
+    <div className="bg-gray-50 min-h-screen p-6 space-y-3">
       <ReportAnalysisHeader />
       <OverviewSection />
       <SalesReportsSection />

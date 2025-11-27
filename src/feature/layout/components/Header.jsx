@@ -1,6 +1,26 @@
+import { useState } from 'react';
 import { Search, NotificationsOutlined } from '@mui/icons-material';
+import { ProfileModal } from '../../../components';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { setSearchValue } from '../../../store/slices/searchSlice';
 
 const Header = ({ onMenuClick, embedded = false }) => {
+  const [profileModalOpen, setProfileModalOpen] = useState(false);
+  const dispatch = useAppDispatch();
+  const searchValue = useAppSelector((state) => state.search.searchValue);
+
+  const handleSearchChange = (e) => {
+    dispatch(setSearchValue(e.target.value));
+  };
+
+  const handleProfileClick = () => {
+    setProfileModalOpen(true);
+  };
+
+  const handleCloseProfile = () => {
+    setProfileModalOpen(false);
+  };
+
   return (
     <div
       className={`w-full bg-white border-b border-[#e0e0e0] px-0 py-0 mb-3 md:mb-4 ${
@@ -27,6 +47,8 @@ const Header = ({ onMenuClick, embedded = false }) => {
           <input
             type="text"
             placeholder="Search"
+            value={searchValue}
+            onChange={handleSearchChange}
             className="flex-1 text-sm bg-transparent border-none outline-none placeholder:text-[#9E9E9E] placeholder:opacity-100"
           />
         </div>
@@ -39,7 +61,11 @@ const Header = ({ onMenuClick, embedded = false }) => {
           </button>
 
           {/* User Avatar & Name */}
-          <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={handleProfileClick}
+            className="flex items-center gap-3 focus:outline-none"
+          >
             <div className="relative w-10 h-10">
               <img
                 src="https://i.pravatar.cc/150?img=12"
@@ -53,9 +79,10 @@ const Header = ({ onMenuClick, embedded = false }) => {
             <span className="hidden sm:block text-[#1A1A1A] text-sm font-semibold">
               Alice Whitaker
             </span>
-          </div>
+          </button>
         </div>
       </div>
+      <ProfileModal open={profileModalOpen} onClose={handleCloseProfile} />
     </div>
   );
 };

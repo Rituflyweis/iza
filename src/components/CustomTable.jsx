@@ -5,7 +5,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TablePagination,
   IconButton,
   Chip,
   Box,
@@ -34,6 +33,10 @@ const CustomTable = ({
   onRoleChange,
   rowsPerPageOptions = [5, 10, 25],
   defaultRowsPerPage = 10,
+  serverSidePagination = false,
+  currentPage: externalCurrentPage,
+  totalPages: externalTotalPages,
+  onPageChange,
 }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(defaultRowsPerPage);
@@ -50,7 +53,11 @@ const CustomTable = ({
   };
 
   const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+    if (serverSidePagination && onPageChange) {
+      onPageChange(newPage + 1); // Convert to 1-based for API
+    } else {
+      setPage(newPage);
+    }
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -58,7 +65,21 @@ const CustomTable = ({
     setPage(0);
   };
 
-  const paginatedRows = rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  // Use external pagination if server-side, otherwise calculate from rows
+  const totalPages = serverSidePagination 
+    ? (externalTotalPages || 1)
+    : Math.max(1, Math.ceil(rows.length / rowsPerPage));
+  
+  const currentPage = serverSidePagination
+    ? (externalCurrentPage !== undefined ? externalCurrentPage : 0)
+    : Math.min(page, totalPages - 1);
+  
+  const paginatedRows = serverSidePagination
+    ? rows // Use all rows as-is for server-side pagination
+    : rows.slice(
+        currentPage * rowsPerPage,
+        currentPage * rowsPerPage + rowsPerPage
+      );
 
   const renderCellContent = (column, row) => {
     if (typeof column.render === 'function') {
@@ -186,24 +207,19 @@ const CustomTable = ({
   };
 
   return (
-    <TableContainer component={Paper} elevation={0} sx={{ border: '1px solid #e0e0e0' }}>
-      <Table sx={{ minWidth: 650 }}>
+    <TableContainer
+      component={Paper}
+      elevation={0}
+      className="border border-[#e0e0e0] rounded-lg overflow-hidden bg-white"
+    >
+      <Table className="min-w-[650px]">
         <TableHead>
-          <TableRow>
+          <TableRow className="bg-transparent">
             {columns.map((column) => (
               <TableCell
                 key={column.id}
                 align={column.align || 'left'}
-                sx={{
-                  backgroundColor: 'transparent',
-                  color: '#00000066',
-                  fontWeight: 800,
-                  fontSize: '12px',
-                  fontStyle: 'normal',
-                  textTransform: 'none',
-                  padding: '12px 16px',
-                  borderBottom: '1px solid #e0e0e0',
-                }}
+                className="bg-transparent text-[#000000A6] font-extrabold text-[12px] not-italic normal-case py-3 px-4 border-b border-[#e0e0e0]"
               >
                 {column.label}
               </TableCell>
@@ -214,22 +230,18 @@ const CustomTable = ({
           {paginatedRows.map((row, index) => (
             <TableRow
               key={row.id || index}
-              sx={{
-                backgroundColor: index % 2 === 1 ? '#f9f9f9' : '#ffffff',
-                '&:hover': {
-                  backgroundColor: '#f5f5f5',
-                },
-              }}
+              className={`${
+                index % 2 === 1 ? 'bg-[#f9f9f9]' : 'bg-white'
+              } hover:bg-[#f5f5f5] transition-colors`}
             >
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
                   align={column.align || 'left'}
-                  sx={{
-                    padding: '12px 16px',
-                    fontSize: '14px',
-                    borderBottom: '1px solid #f0f0f0',
-                  }}
+                  className={`py-3 px-4 text-[14px] border-b border-[#f0f0f0] ${
+                    column.wrap ? 'whitespace-normal break-words' : ''
+                  }`}
+                  style={column.wrap ? { whiteSpace: 'normal', wordBreak: 'break-word' } : {}}
                 >
                   {renderCellContent(column, row)}
                 </TableCell>
@@ -241,52 +253,67 @@ const CustomTable = ({
       
       {/* Custom Pagination */}
       <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        padding="16px 24px"
-        borderTop="1px solid #e0e0e0"
+        className="flex items-center justify-between px-6 py-4 border-t border-[#e0e0e0]"
       >
-        <Typography variant="body2" sx={{ fontSize: '14px' }}>
-          Page {page + 1}
+        <Typography variant="body2" className="text-sm">
+          Page {currentPage + 1} of {totalPages}
         </Typography>
-        <Box display="flex" alignItems="center" gap={1}>
+        <Box className="flex items-center gap-1">
           <IconButton
-            onClick={() => handleChangePage(null, page - 1)}
-            disabled={page === 0}
+            onClick={() => handleChangePage(null, currentPage - 1)}
+            disabled={currentPage === 0}
             size="small"
-            sx={{ color: 'text.secondary' }}
+            className="text-gray-500 disabled:text-gray-300"
           >
             <ChevronLeft />
           </IconButton>
-          {Array.from({ length: Math.min(5, Math.ceil(rows.length / rowsPerPage)) }).map((_, i) => {
-            const pageNumber = i;
-            const isCurrentPage = page === pageNumber;
+          {Array.from({
+            length: Math.min(5, totalPages),
+          }).map((_, i) => {
+            const halfWindow = Math.floor(5 / 2);
+            let startPage = currentPage - halfWindow;
+            if (startPage < 0) startPage = 0;
+            if (startPage + 5 > totalPages) startPage = Math.max(0, totalPages - 5);
+            const pageNumber = startPage + i;
+            const isCurrentPage = currentPage === pageNumber;
             return (
               <IconButton
-                key={i}
+                key={pageNumber}
                 onClick={() => handleChangePage(null, pageNumber)}
-                sx={{
-                  minWidth: '32px',
-                  height: '32px',
-                  backgroundColor: isCurrentPage ? '#dc004e' : 'transparent',
-                  color: isCurrentPage ? '#ffffff' : 'text.secondary',
-                  '&:hover': {
-                    backgroundColor: isCurrentPage ? '#dc004e' : '#f5f5f5',
-                  },
-                }}
+                className={`min-w-[32px] h-8 rounded ${
+                  isCurrentPage 
+                    ? 'bg-[#F8069D] text-white hover:bg-[#C1057D]' 
+                    : 'bg-transparent text-gray-500 hover:bg-gray-100'
+                }`}
+                sx={
+                  isCurrentPage
+                    ? {
+                        backgroundColor: '#F8069D',
+                        color: '#FFFFFF',
+                        '&:hover': {
+                          backgroundColor: '#C1057D',
+                        },
+                      }
+                    : {
+                        backgroundColor: 'transparent',
+                        color: '#6B7280',
+                        '&:hover': {
+                          backgroundColor: '#F3F4F6',
+                        },
+                      }
+                }
               >
-                <Typography variant="body2" sx={{ fontSize: '14px' }}>
+                <Typography variant="body2" className="text-sm">
                   {pageNumber + 1}
                 </Typography>
               </IconButton>
             );
           })}
           <IconButton
-            onClick={() => handleChangePage(null, page + 1)}
-            disabled={page >= Math.ceil(rows.length / rowsPerPage) - 1}
+            onClick={() => handleChangePage(null, currentPage + 1)}
+            disabled={currentPage >= totalPages - 1}
             size="small"
-            sx={{ color: 'text.secondary' }}
+            className="text-gray-500 disabled:text-gray-300"
           >
             <ChevronRight />
           </IconButton>

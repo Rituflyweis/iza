@@ -17,15 +17,18 @@ const Sidebar = ({ mobileOpen, onMobileClose }) => {
     }
   };
 
-  const isActive = (path, itemId) => {
-    // Special handling for User Management - highlight on all user-related pages
-    if (itemId === 'user-management') {
-      return location.pathname === path || 
-             location.pathname.startsWith('/user-management') ||
-             location.pathname.startsWith('/user-detail') ||
-             location.pathname.startsWith('/create-user');
+  const matchesPath = (targetPath) => {
+    if (!targetPath) return false;
+    if (location.pathname === targetPath) return true;
+    return location.pathname.startsWith(`${targetPath}/`);
+  };
+
+  const isActive = (item) => {
+    if (item.matchPaths?.length) {
+      return item.matchPaths.some((matchPath) => matchesPath(matchPath));
     }
-    return location.pathname === path;
+
+    return matchesPath(item.path);
   };
 
   const drawerContent = (
@@ -56,7 +59,7 @@ const Sidebar = ({ mobileOpen, onMobileClose }) => {
       {/* Navigation Menu */}
       <List sx={{ px: '0.75rem', flex: 1, overflow: 'auto', py: '0.5rem' }}>
         {menuItems.map((item) => {
-          const active = isActive(item.path, item.id);
+          const active = isActive(item);
           
           return (
             <ListItem key={item.id} disablePadding sx={{ mb: '0.25rem' }}>

@@ -1,4 +1,5 @@
 import { Icon } from '@iconify/react';
+import { useNavigate } from 'react-router-dom';
 import {
   TableContainer,
   Table,
@@ -19,6 +20,8 @@ const products = [
 const gradientMap = ['from-pink-400 to-pink-300', 'from-blue-400 to-blue-300', 'from-green-400 to-green-300'];
 
 const TopSellingProducts = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
       <div className="mb-4 flex items-center justify-between">
@@ -28,7 +31,12 @@ const TopSellingProducts = () => {
             <Icon icon="mdi:filter-variant" width={16} height={16} />
             Filter
           </button>
-          <button className="text-xs font-semibold text-pink-600 hover:text-pink-700">See all</button>
+          <button 
+            onClick={() => navigate('/dashboard/top-selling-products')}
+            className="text-xs font-semibold text-pink-600 hover:text-pink-700"
+          >
+            See all
+          </button>
         </div>
       </div>
 

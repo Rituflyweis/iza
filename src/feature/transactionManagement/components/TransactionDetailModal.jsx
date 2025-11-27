@@ -1,20 +1,31 @@
-import { Modal, Box, IconButton, Chip } from '@mui/material';
+import { Modal, Box, IconButton, Chip, Typography, CircularProgress } from '@mui/material';
 import { Icon } from '@iconify/react';
+import { formatDate, getFullName } from '../../../utils/constants';
 
-const TransactionDetailModal = ({ open, onClose, transaction }) => {
-  if (!transaction) return null;
+const TransactionDetailModal = ({ open, onClose, transaction, loading = false, errorMessage = '' }) => {
+  if (!open) return null;
+
+  // Extract data from API response
+  const transactionId = transaction?._id || transaction?.id || transaction?.transactionId || '-';
+  const orderId = transaction?.productOrder?.orderId || transaction?.orderId || '-';
+  const customerName = transaction?.user 
+    ? getFullName(transaction.user.firstName, transaction.user.lastName)
+    : transaction?.customerName || '-';
+  const date = formatDate(transaction?.createdAt || transaction?.date || transaction?.transactionDate);
+  const paymentMethod = transaction?.paymentMode || transaction?.paymentMethod || '-';
+  const status = transaction?.status || transaction?.transactionStatus || transaction?.user?.userStatus || 'Pending';
+  const amount = transaction?.amount || transaction?.totalAmount || transaction?.total || '-';
 
   // Get products and price details from transaction data, with fallback defaults
-  const products = transaction.products || [
-    { name: 'Hydrating Serum (50ml)', quantity: 1, price: 50 },
-    { name: 'Matte Lipstick', quantity: 2, price: 40 },
+  const products = transaction?.products || transaction?.productOrder?.products || [
+    { name: 'No products available', quantity: 0, price: 0 },
   ];
 
-  const priceDetails = transaction.priceDetails || {
-    subtotal: 159,
-    discount: 59,
-    shipping: 20,
-    total: 200,
+  const priceDetails = transaction?.priceDetails || {
+    subtotal: transaction?.subtotal || transaction?.amount || 0,
+    discount: transaction?.discount || 0,
+    shipping: transaction?.shipping || 0,
+    total: transaction?.total || transaction?.amount || 0,
   };
 
   const getStatusColor = (status) => {
@@ -30,7 +41,7 @@ const TransactionDetailModal = ({ open, onClose, transaction }) => {
     }
   };
 
-  const statusColors = getStatusColor(transaction.status);
+  const statusColors = getStatusColor(transaction?.status);
 
   return (
     <Modal
@@ -71,79 +82,106 @@ const TransactionDetailModal = ({ open, onClose, transaction }) => {
             Transaction Detail
           </h2>
 
-          {/* Transaction Information */}
-          <div className="space-y-3 mb-6">
-            <div className="flex justify-between">
-              <span className="text-gray-700 font-medium">Transaction ID:</span>
-              <span className="text-gray-900">{transaction.id}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-700 font-medium">Date:</span>
-              <span className="text-gray-900">{transaction.date || 'DD-MM-YYYY'}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-700 font-medium">User Name:</span>
-              <span className="text-gray-900">{transaction.customer}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-700 font-medium">Order ID:</span>
-              <span className="text-gray-900">{transaction.orderId}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-700 font-medium">Payment Method:</span>
-              <span className="text-gray-900">{transaction.paymentMethod}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-700 font-medium">Status:</span>
-              <Chip
-                label={transaction.status || 'Completed'}
-                size="small"
-                sx={{
-                  bgcolor: statusColors.bg,
-                  color: statusColors.color,
-                  fontWeight: 500,
-                  fontSize: '0.75rem',
-                  borderRadius: '1rem',
-                  px: '0.5rem',
-                }}
-              />
-            </div>
-          </div>
-
-          {/* Products Section */}
-          <div className="mb-6">
-            <h3 className="text-lg font-bold text-gray-900 mb-3">Products</h3>
-            <div className="space-y-2">
-              {products.map((product, index) => (
-                <div key={index} className="text-gray-900">
-                  {product.name} - Qty: {product.quantity} - ${product.price}
+          {loading ? (
+            <Box className="flex justify-center items-center py-8">
+              <CircularProgress size={40} />
+              <Typography className="ml-4">Loading transaction details...</Typography>
+            </Box>
+          ) : errorMessage ? (
+            <Box className="text-center py-8">
+              <Typography color="error">{errorMessage}</Typography>
+            </Box>
+          ) : !transaction ? (
+            <Box className="text-center py-8">
+              <Typography>No transaction data available</Typography>
+            </Box>
+          ) : (
+            <>
+              {/* Transaction Information */}
+              <div className="space-y-3 mb-6">
+                <div className="flex justify-between">
+                  <span className="text-gray-700 font-medium">Transaction ID:</span>
+                  <span className="text-gray-900">{transactionId}</span>
                 </div>
-              ))}
-            </div>
-          </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-700 font-medium">Date:</span>
+                  <span className="text-gray-900">{date}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-700 font-medium">User Name:</span>
+                  <span className="text-gray-900 capitalize">{customerName}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-700 font-medium">Order ID:</span>
+                  <span className="text-gray-900">{orderId}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-700 font-medium">Payment Method:</span>
+                  <span className="text-gray-900">{paymentMethod}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-700 font-medium">Amount:</span>
+                  <span className="text-gray-900 font-semibold">{amount}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700 font-medium">Status:</span>
+                  <Chip
+                    label={status}
+                    size="small"
+                    sx={{
+                      bgcolor: statusColors.bg,
+                      color: statusColors.color,
+                      fontWeight: 500,
+                      fontSize: '0.75rem',
+                      borderRadius: '1rem',
+                      px: '0.5rem',
+                    }}
+                  />
+                </div>
+              </div>
 
-          {/* Price Details Section */}
-          <div>
-            <h3 className="text-lg font-bold text-gray-900 mb-3">Price Details</h3>
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <span className="text-gray-700">Subtotal (inclusive tax):</span>
-                <span className="text-gray-900 text-right">₹{priceDetails.subtotal}</span>
+              {/* Products Section */}
+              {products && products.length > 0 && (
+                <div className="mb-6">
+                  <h3 className="text-lg font-bold text-gray-900 mb-3">Products</h3>
+                  <div className="space-y-2">
+                    {products.map((product, index) => (
+                      <div key={index} className="text-gray-900">
+                        {product.name || product.productName || 'Product'} - Qty: {product.quantity || 0} - ₹{product.price || 0}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Price Details Section */}
+              <div>
+                <h3 className="text-lg font-bold text-gray-900 mb-3">Price Details</h3>
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-gray-700">Subtotal (inclusive tax):</span>
+                    <span className="text-gray-900 text-right">₹{priceDetails.subtotal}</span>
+                  </div>
+                  {priceDetails.discount > 0 && (
+                    <div className="flex justify-between">
+                      <span className="text-gray-700">Discount:</span>
+                      <span className="text-green-600 text-right">-₹{priceDetails.discount}</span>
+                    </div>
+                  )}
+                  {priceDetails.shipping > 0 && (
+                    <div className="flex justify-between">
+                      <span className="text-gray-700">Shipping Charges:</span>
+                      <span className="text-gray-900 text-right">₹{priceDetails.shipping}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between pt-2 border-t border-gray-200">
+                    <span className="text-gray-900 font-bold">Total Amount:</span>
+                    <span className="text-gray-900 font-bold text-right">₹{priceDetails.total}</span>
+                  </div>
+                </div>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-700">Discount:</span>
-                <span className="text-green-600 text-right">-₹{priceDetails.discount}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-700">Shipping Charges:</span>
-                <span className="text-gray-900 text-right">₹{priceDetails.shipping}</span>
-              </div>
-              <div className="flex justify-between pt-2 border-t border-gray-200">
-                <span className="text-gray-900 font-bold">Total Amount:</span>
-                <span className="text-gray-900 font-bold text-right">₹{priceDetails.total}</span>
-              </div>
-            </div>
-          </div>
+            </>
+          )}
         </div>
       </Box>
     </Modal>

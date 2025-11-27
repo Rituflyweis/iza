@@ -1,6 +1,6 @@
 import ProductManagementHeading from './components/ProductManagementHeading';
 import ProductManagementTable from './components/ProductManagementTable';
-import AddProductChooser from './components/AddProductChooser';
+import { AddProductChooser } from '../../components';
 import { Box } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -15,7 +15,7 @@ const ProductManagement = () => {
     closeChooser();
     navigate('/product-management/add-bulk');
   };
-   const goToAddProduct = () => {
+  const goToAddProduct = () => {
     closeChooser();
     navigate('/product-management/add-product');
   };

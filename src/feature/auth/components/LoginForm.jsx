@@ -1,31 +1,101 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import { useFormik } from 'formik';
 import { Button, Checkbox, FormControlLabel, Typography, Box, Link } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { CustomInput } from '../../../components';
+import { loginSchema } from '../../../schema/auth/authSchema';
+import axiosInstance from '../../../api/axios';
+import { useAppDispatch } from '../../../store/hooks';
+import { setCredentials, setError } from '../../../store/slices/authSlice';
+import { showLoader, hideLoader } from '../../../store/slices/loaderSlice';
+import useToast from '../../../hooks/useToast';
 
 const LoginForm = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { showSuccess, showError } = useToast();
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    rememberMe: false,
+  const isSubmittingRef = useRef(false);
+
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+      rememberMe: false,
+    },
+    validationSchema: loginSchema,
+    validateOnBlur: true,
+    validateOnChange: true,
+    onSubmit: async (values, { setSubmitting }) => {
+      // Prevent double submission
+      if (isSubmittingRef.current) {
+        return;
+      }
+
+      isSubmittingRef.current = true;
+      setSubmitting(true);
+
+      try {
+        dispatch(showLoader('Logging in...'));
+
+        const requestBody = {
+          email: values.email,
+          password: values.password,
+        };
+
+        const response = await axiosInstance.post('/signin', requestBody);
+
+        // Extract token and user data from response
+        const { accessToken, data } = response.data;
+        const authToken = accessToken;
+        const userData = data;
+
+        // Store credentials in Redux
+        dispatch(
+          setCredentials({
+            token: authToken,
+            user: userData,
+          })
+        );
+
+        // Store rememberMe preference
+        if (values.rememberMe) {
+          localStorage.setItem("token", authToken);
+        } else {
+          sessionStorage.setItem("token", authToken);
+        }
+
+        showSuccess('Login successful!');
+
+        // Navigate to dashboard
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 500);
+      } catch (error) {
+        const errorMessage =
+          error.response?.data?.message ||
+          error.response?.data?.error ||
+          'Login failed. Please check your credentials.';
+        showError(errorMessage);
+        dispatch(setError(errorMessage));
+      } finally {
+        dispatch(hideLoader());
+        setSubmitting(false);
+        isSubmittingRef.current = false;
+      }
+    },
   });
 
-  const handleChange = (e) => {
-    const { name, value, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: name === 'rememberMe' ? checked : value,
-    }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Login:', formData);
-    navigate("/dashboard")
-    // Implement login logic here
-  };
+  const {
+    values,
+    errors,
+    touched,
+    handleSubmit,
+    getFieldProps,
+    isSubmitting,
+    isValid,
+    dirty,
+  } = formik;
 
   const handleSignUp = () => {
     navigate('/signup');
@@ -36,52 +106,47 @@ const LoginForm = () => {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit} className="w-full">
-      <Typography 
-        variant="h4" 
-        className="text-gray-800 font-extrabold text-[2rem]"
-        sx={{ mb: '0.5rem', display: 'block' }}
+    <form onSubmit={handleSubmit} className="w-full">
+      <Typography
+        variant="h4"
+        className="text-gray-800 font-extrabold text-[2rem] mb-2"
       >
         Welcome back!
       </Typography>
-      <Typography 
-        variant="body1" 
-        className="text-gray-600 text-sm"
-        sx={{ mb: '2rem', display: 'block' }}
+      <Typography
+        variant="body1"
+        className="text-gray-600 text-sm mb-8"
       >
         Welcome back! please Login in to your account
       </Typography>
 
       <CustomInput
         label="Email"
-        name="email"
         type="email"
         placeholder="Enter email"
-        value={formData.email}
-        onChange={handleChange}
-        // required
+        {...getFieldProps('email')}
+        error={touched.email && errors.email}
+        required
       />
 
       <CustomInput
         label="Password"
-        name="password"
-        type="password"
         placeholder="Enter Password"
-        value={formData.password}
-        onChange={handleChange}
-        // required
+        type={showPassword ? 'text' : 'password'}
+        {...getFieldProps('password')}
+        error={touched.password && errors.password}
+        required
         showPasswordToggle
         showPassword={showPassword}
         onTogglePassword={() => setShowPassword(!showPassword)}
       />
 
-      <Box className="flex justify-between items-center" sx={{ mb: '1.5rem' }}>
+      <Box className="flex justify-between items-center mb-6">
         <FormControlLabel
           control={
             <Checkbox
-              name="rememberMe"
-              checked={formData.rememberMe}
-              onChange={handleChange}
+              {...getFieldProps('rememberMe')}
+              checked={values.rememberMe}
               className="text-gray-500"
               sx={{
                 '&.Mui-checked': {
@@ -113,24 +178,54 @@ const LoginForm = () => {
       <Button
         type="submit"
         variant="contained"
-        color="primary"
         fullWidth
-        className="normal-case bg-[#F8069D] text-white py-[0.875rem] rounded-[0.625rem] text-base font-semibold hover:bg-[#C1057D]"
-        sx={{ mb: '1rem' }}
+        disabled={!isValid || !dirty || isSubmitting}
+        sx={{
+          backgroundColor: '#F8069D',
+          color: '#FFFFFF',
+          textTransform: 'none',
+          padding: '0.875rem',
+          borderRadius: '0.625rem',
+          fontSize: '1rem',
+          fontWeight: 600,
+          '&:hover': {
+            backgroundColor: '#C1057D',
+          },
+          '&:disabled': {
+            backgroundColor: '#F8069D',
+            opacity: 0.5,
+            color: '#FFFFFF',
+          },
+          mb: '0.75rem',
+        }}
       >
-        Login
+        {isSubmitting ? 'Logging in...' : 'Login'}
       </Button>
 
       <Button
         variant="outlined"
-        color="primary"
         fullWidth
         onClick={handleSignUp}
-        className="normal-case border-2 border-[#F8069D] text-[#F8069D] py-[0.875rem] rounded-[0.625rem] text-base font-semibold hover:bg-[#F8069D]/5 hover:border-[#F8069D]"
+        sx={{
+          border: '2px solid #F8069D',
+          borderColor: '#F8069D',
+          color: '#F8069D',
+          backgroundColor: '#FFFFFF',
+          textTransform: 'none',
+          padding: '0.875rem',
+          borderRadius: '0.625rem',
+          fontSize: '1rem',
+          fontWeight: 600,
+          '&:hover': {
+            borderColor: '#F8069D',
+            backgroundColor: 'rgba(248, 6, 157, 0.05)',
+            color: '#F8069D',
+          },
+        }}
       >
         Sign Up
       </Button>
-    </Box>
+    </form>
   );
 };
 

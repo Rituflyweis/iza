@@ -12,28 +12,68 @@ import {
   IconButton,
   Typography,
   Chip,
+  Switch,
 } from '@mui/material';
 import { Icon } from '@iconify/react';
 import { DeleteModal } from '../../../components';
+
+const initialProducts = [
+  {
+    id: 1,
+    name: 'Hydrating Serum',
+    brand: 'GlowLabs',
+    category: 'Skincare',
+    subCategory: 'Face',
+    price: '₹300',
+    quantity: 20,
+    tag: 'Sustainable',
+    image: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=120&h=120&fit=crop',
+    isActive: true,
+  },
+  {
+    id: 2,
+    name: 'Vitamin C Cleanser',
+    brand: 'PureSkin',
+    category: 'Skincare',
+    subCategory: 'Cleanser',
+    price: '₹450',
+    quantity: 12,
+    tag: 'Bestseller',
+    image: 'https://images.unsplash.com/photo-1512200982410-496ce38e39a4?w=120&h=120&fit=crop',
+    isActive: true,
+  },
+  {
+    id: 3,
+    name: 'Matte Lipstick',
+    brand: 'ColorPop',
+    category: 'Makeup',
+    subCategory: 'Lips',
+    price: '₹550',
+    quantity: 35,
+    tag: 'New Arrival',
+    image: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=120&h=120&fit=crop',
+    isActive: false,
+  },
+  {
+    id: 4,
+    name: 'Aloe Hydrating Gel',
+    brand: 'Naturals',
+    category: 'Skincare',
+    subCategory: 'Body',
+    price: '₹320',
+    quantity: 48,
+    tag: 'Vegan',
+    image: 'https://images.unsplash.com/photo-1506619216599-9d16d0903dfd?w=120&h=120&fit=crop',
+    isActive: true,
+  },
+];
 
 const ProductManagementTable = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
-
-  // Sample data
-  const products = [
-    { id: 1, name: 'Hydrating Serum', category: 'Skincare', subCategory: 'Face', price: '₹300', quantity: 20, tag: 'Sustainable' },
-    { id: 2, name: 'Hydrating Serum', category: 'Skincare', subCategory: 'Face', price: '₹300', quantity: 20, tag: 'Sustainable' },
-    { id: 3, name: 'Hydrating Serum', category: 'Skincare', subCategory: 'Face', price: '₹300', quantity: 20, tag: 'Sustainable' },
-    { id: 4, name: 'Hydrating Serum', category: 'Skincare', subCategory: 'Face', price: '₹300', quantity: 20, tag: 'Sustainable' },
-    { id: 5, name: 'Hydrating Serum', category: 'Skincare', subCategory: 'Face', price: '₹300', quantity: 20, tag: 'Sustainable' },
-    { id: 6, name: 'Hydrating Serum', category: 'Skincare', subCategory: 'Face', price: '₹300', quantity: 20, tag: 'Sustainable' },
-    { id: 7, name: 'Hydrating Serum', category: 'Skincare', subCategory: 'Face', price: '₹300', quantity: 20, tag: 'Sustainable' },
-    { id: 8, name: 'Hydrating Serum', category: 'Skincare', subCategory: 'Face', price: '₹300', quantity: 20, tag: 'Sustainable' },
-    { id: 9, name: 'Hydrating Serum', category: 'Skincare', subCategory: 'Face', price: '₹300', quantity: 20, tag: 'Sustainable' },
-  ];
+  const [products, setProducts] = useState(initialProducts);
 
   const handleView = (productId) => {
     navigate(`/product-management/detail/${productId}`);
@@ -44,9 +84,17 @@ const ProductManagementTable = () => {
   };
 
   const handleDelete = (productId) => {
-    const product = products.find(p => p.id === productId);
+    const product = products.find((p) => p.id === productId);
     setProductToDelete(product);
     setDeleteModalOpen(true);
+  };
+
+  const handleToggleStatus = (productId) => {
+    setProducts((prevProducts) =>
+      prevProducts.map((product) =>
+        product.id === productId ? { ...product, isActive: !product.isActive } : product,
+      ),
+    );
   };
 
   const handleConfirmDelete = () => {
@@ -76,7 +124,10 @@ const ProductManagementTable = () => {
                 #
               </TableCell>
               <TableCell sx={{ fontWeight: 800, fontSize: '0.75rem', color: '#00000066', py: '0.75rem' }}>
-                Product Name
+                Product
+              </TableCell>
+              <TableCell sx={{ fontWeight: 800, fontSize: '0.75rem', color: '#00000066', py: '0.75rem' }}>
+                Brand
               </TableCell>
               <TableCell sx={{ fontWeight: 800, fontSize: '0.75rem', color: '#00000066', py: '0.75rem' }}>
                 Category
@@ -92,6 +143,9 @@ const ProductManagementTable = () => {
               </TableCell>
               <TableCell sx={{ fontWeight: 800, fontSize: '0.75rem', color: '#00000066', py: '0.75rem' }}>
                 Tag
+              </TableCell>
+              <TableCell sx={{ fontWeight: 800, fontSize: '0.75rem', color: '#00000066', py: '0.75rem' }}>
+                Status
               </TableCell>
               <TableCell sx={{ fontWeight: 800, fontSize: '0.75rem', color: '#00000066', py: '0.75rem' }}>
                 Action
@@ -110,13 +164,49 @@ const ProductManagementTable = () => {
                 }}
               >
                 <TableCell sx={{ py: '1rem', color: '#1A1A1A' }}>{product.id}</TableCell>
-                <TableCell sx={{ py: '1rem', color: '#1A1A1A', fontWeight: 500 }}>{product.name}</TableCell>
+                <TableCell sx={{ py: '1rem', color: '#1A1A1A' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <Box
+                      component="img"
+                      src={product.image}
+                      alt={product.name}
+                      sx={{ width: 48, height: 48, borderRadius: '0.5rem', objectFit: 'cover', border: '1px solid #eee' }}
+                    />
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                      <Typography sx={{ fontWeight: 600, fontSize: '0.9rem' }}>{product.name}</Typography>
+                      <Typography sx={{ fontSize: '0.75rem', color: '#5A6678' }}>SKU #{product.id}</Typography>
+                    </Box>
+                  </Box>
+                </TableCell>
+                <TableCell sx={{ py: '1rem', color: '#1A1A1A' }}>{product.brand}</TableCell>
                 <TableCell sx={{ py: '1rem', color: '#1A1A1A' }}>{product.category}</TableCell>
                 <TableCell sx={{ py: '1rem', color: '#1A1A1A' }}>{product.subCategory}</TableCell>
                 <TableCell sx={{ py: '1rem', color: '#1A1A1A' }}>{product.price}</TableCell>
                 <TableCell sx={{ py: '1rem', color: '#1A1A1A' }}>{product.quantity}</TableCell>
                 <TableCell sx={{ py: '1rem' }}>
-             {product.tag}
+                  <Chip
+                    label={product.tag}
+                    size="small"
+                    sx={{
+                      bgcolor: 'rgba(248, 6, 157, 0.08)',
+                      color: '#F8069D',
+                      fontWeight: 600,
+                      borderRadius: '0.75rem',
+                    }}
+                  />
+                </TableCell>
+                <TableCell sx={{ py: '1rem' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <Switch
+                      checked={product.isActive}
+                      onChange={() => handleToggleStatus(product.id)}
+                      color="primary"
+                      inputProps={{ 'aria-label': `toggle visibility ${product.name}` }}
+                    />
+                    <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: product.isActive ? '#22C55E' : '#9E9E9E' }}>
+                      {product.isActive ? 'Visible' : 'Hidden'}
+                    </Typography>
+                  </Box>
                 </TableCell>
                 <TableCell sx={{ py: '1rem' }}>
                   <Box sx={{ display: 'flex', gap: '0.5rem' }}>

@@ -6,7 +6,9 @@ const AddUser = () => {
   return (
     <Box sx={{ width: '100%' }}>
       <CreateUserHeader />
-      <CreateUserForm />
+      <Box sx={{ mt: '2rem' }}>
+        <CreateUserForm />
+      </Box>
     </Box>
   );
 };
