@@ -15,6 +15,7 @@ const SignUpForm = () => {
   const { showSuccess, showError } = useToast();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [submitAttempted, setSubmitAttempted] = useState(false);
   const isSubmittingRef = useRef(false);
 
   const formik = useFormik({
@@ -27,7 +28,27 @@ const SignUpForm = () => {
     validationSchema: signUpSchema,
     validateOnBlur: true,
     validateOnChange: true,
-    onSubmit: async (values, { resetForm, setSubmitting }) => {
+    onSubmit: async (values, { resetForm, setSubmitting, setTouched, validateForm }) => {
+      // Mark that form submission was attempted
+      setSubmitAttempted(true);
+
+      // Mark all fields as touched FIRST so errors will display
+      setTouched({
+        fullName: true,
+        email: true,
+        password: true,
+        confirmPassword: true,
+      });
+
+      // Then validate the form
+      const validationErrors = await validateForm();
+
+      // Stop if validation fails
+      if (Object.keys(validationErrors).length > 0) {
+        setSubmitting(false);
+        return;
+      }
+
       // Prevent double submission
       if (isSubmittingRef.current) {
         return;
@@ -98,7 +119,8 @@ const SignUpForm = () => {
         label="Full Name"
         placeholder="Enter Name"
         {...getFieldProps('fullName')}
-        error={touched.fullName && errors.fullName}
+        touched={touched.fullName || submitAttempted}
+        error={(touched.fullName || submitAttempted) && errors.fullName ? errors.fullName : ''}
         required
       />
 
@@ -107,7 +129,8 @@ const SignUpForm = () => {
         type="email"
         placeholder="Enter Email"
         {...getFieldProps('email')}
-        error={touched.email && errors.email}
+        touched={touched.email || submitAttempted}
+        error={(touched.email || submitAttempted) && errors.email ? errors.email : ''}
         required
       />
 
@@ -118,7 +141,8 @@ const SignUpForm = () => {
             placeholder="Enter Password"
             type={showPassword ? 'text' : 'password'}
             {...getFieldProps('password')}
-            error={touched.password && errors.password}
+            touched={touched.password || submitAttempted}
+            error={(touched.password || submitAttempted) && errors.password ? errors.password : ''}
             required
             showPasswordToggle
             showPassword={showPassword}
@@ -131,7 +155,8 @@ const SignUpForm = () => {
             placeholder="Enter Password"
             type={showConfirmPassword ? 'text' : 'password'}
             {...getFieldProps('confirmPassword')}
-            error={touched.confirmPassword && errors.confirmPassword}
+            touched={touched.confirmPassword || submitAttempted}
+            error={(touched.confirmPassword || submitAttempted) && errors.confirmPassword ? errors.confirmPassword : ''}
             required
             showPasswordToggle
             showPassword={showConfirmPassword}
@@ -144,7 +169,7 @@ const SignUpForm = () => {
         type="submit"
         variant="contained"
         fullWidth
-        disabled={!isValid || !dirty || isSubmitting}
+        disabled={isSubmitting}
         onClick={(e) => {
           // Additional prevention for double clicks
           if (isSubmitting) {

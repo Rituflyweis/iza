@@ -14,15 +14,19 @@ const CustomInput = ({
   showPassword = false,
   onTogglePassword,
   error,
+  touched,
   className = '',
   sx = {},
   ...props
 }) => {
+  const showError = touched && error;
+
   return (
     <Box className={className} sx={{ mb: '1rem', ...sx }}>
       <label className="block text-sm font-semibold text-[#5A6678]" style={{ marginBottom: '0.5rem' }}>
         {label} {required && <span className="text-red-500">*</span>}
       </label>
+
       <Box className="relative">
         <input
           type={showPasswordToggle ? (showPassword ? 'text' : 'password') : type}
@@ -33,12 +37,13 @@ const CustomInput = ({
           placeholder={placeholder}
           required={required}
           className={`w-full px-4 py-[0.875rem] border-2 rounded-lg focus:outline-none focus:ring-2 transition-colors ${
-            error
+            showError
               ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
               : 'border-gray-200 focus:ring-pink-500 focus:border-pink-500'
           }`}
           {...props}
         />
+
         {showPasswordToggle && (
           <button
             type="button"
@@ -49,7 +54,8 @@ const CustomInput = ({
           </button>
         )}
       </Box>
-      {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
+
+      {showError && <p className="text-red-500 text-xs mt-1">{error}</p>}
     </Box>
   );
 };

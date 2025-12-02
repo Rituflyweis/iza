@@ -1,18 +1,59 @@
 import { useState } from 'react';
+import { useFormik } from 'formik';
 import { Button, Typography, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { CustomInput } from '../../../components';
+import { forgotPasswordSchema } from '../../../schema/auth/authSchema';
 
 const ForgotPasswordForm = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
+  const [submitAttempted, setSubmitAttempted] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Submit email:', email);
-    // Navigate to OTP page after submitting email
-    navigate('/verify-otp');
-  };
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+    },
+    validationSchema: forgotPasswordSchema,
+    validateOnBlur: true,
+    validateOnChange: true,
+    onSubmit: async (values, { setSubmitting, setTouched, validateForm }) => {
+      // Mark that form submission was attempted
+      setSubmitAttempted(true);
+
+      // Mark all fields as touched FIRST so errors will display
+      setTouched({
+        email: true,
+      });
+
+      // Then validate the form
+      const validationErrors = await validateForm();
+
+      // Stop if validation fails
+      if (Object.keys(validationErrors).length > 0) {
+        setSubmitting(false);
+        return;
+      }
+
+      setSubmitting(true);
+
+      try {
+        // Navigate to OTP page after submitting email
+        navigate('/verify-otp');
+      } catch (error) {
+        console.error('Error:', error);
+      } finally {
+        setSubmitting(false);
+      }
+    },
+  });
+
+  const {
+    errors,
+    touched,
+    handleSubmit,
+    getFieldProps,
+    isSubmitting,
+  } = formik;
 
   return (
     <Box component="form" onSubmit={handleSubmit} className="w-full">
@@ -33,13 +74,12 @@ const ForgotPasswordForm = () => {
 
       <CustomInput
         label="Email"
-        name="email"
         type="email"
         placeholder="Enter Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        {...getFieldProps('email')}
+        touched={touched.email || submitAttempted}
+        error={(touched.email || submitAttempted) && errors.email ? errors.email : ''}
         required
-        className=""
         sx={{ mb: '1.5rem' }}
       />
 
@@ -48,9 +88,10 @@ const ForgotPasswordForm = () => {
         variant="contained"
         color="primary"
         fullWidth
+        disabled={isSubmitting}
         className="normal-case bg-[#F8069D] text-white py-[0.875rem] rounded-[0.625rem] text-base font-semibold hover:bg-[#C1057D]"
       >
-        Submit
+        {isSubmitting ? 'Submitting...' : 'Submit'}
       </Button>
     </Box>
   );

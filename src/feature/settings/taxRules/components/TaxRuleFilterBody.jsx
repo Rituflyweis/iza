@@ -59,18 +59,25 @@ const CheckboxOption = ({ label, checked, onChange }) => (
   </Box>
 );
 
-const ReportAnalysisFilterBody = ({ filterData, onFilterChange }) => {
+const TaxRuleFilterBody = ({ filterData, onFilterChange }) => {
   const months = [
     'Jan', 'Feb', 'March', 'April', 'May',
     'June', 'July', 'August', 'Sep', 'Oct',
     'Nov', 'Dec'
   ];
 
-  const handleReportChange = (report) => {
-    const newReports = filterData.reports.includes(report)
-      ? filterData.reports.filter(r => r !== report)
-      : [...filterData.reports, report];
-    onFilterChange({ ...filterData, reports: newReports });
+  const handleRegionChange = (region) => {
+    const newRegions = filterData.region.includes(region)
+      ? filterData.region.filter(r => r !== region)
+      : [...filterData.region, region];
+    onFilterChange({ ...filterData, region: newRegions });
+  };
+
+  const handleStatusChange = (status) => {
+    const newStatuses = filterData.status.includes(status)
+      ? filterData.status.filter(s => s !== status)
+      : [...filterData.status, status];
+    onFilterChange({ ...filterData, status: newStatuses });
   };
 
   const handleMonthChange = (month) => {
@@ -82,32 +89,36 @@ const ReportAnalysisFilterBody = ({ filterData, onFilterChange }) => {
 
   return (
     <Box>
-      {/* Reports Section */}
-      <FilterSection title="Reports">
+      {/* Region Section */}
+      <FilterSection title="Region">
         <CheckboxOption
-          label="Sales reports"
-          checked={filterData.reports.includes('Sales reports')}
-          onChange={() => handleReportChange('Sales reports')}
+          label="Country"
+          checked={filterData.region.includes('Country')}
+          onChange={() => handleRegionChange('Country')}
         />
         <CheckboxOption
-          label="Customer Reports"
-          checked={filterData.reports.includes('Customer Reports')}
-          onChange={() => handleReportChange('Customer Reports')}
+          label="State"
+          checked={filterData.region.includes('State')}
+          onChange={() => handleRegionChange('State')}
         />
         <CheckboxOption
-          label="Product performance reports"
-          checked={filterData.reports.includes('Product performance reports')}
-          onChange={() => handleReportChange('Product performance reports')}
+          label="City"
+          checked={filterData.region.includes('City')}
+          onChange={() => handleRegionChange('City')}
+        />
+      </FilterSection>
+
+      {/* Status Section */}
+      <FilterSection title="Status">
+        <CheckboxOption
+          label="Active"
+          checked={filterData.status.includes('Active')}
+          onChange={() => handleStatusChange('Active')}
         />
         <CheckboxOption
-          label="New User"
-          checked={filterData.reports.includes('New User')}
-          onChange={() => handleReportChange('New User')}
-        />
-        <CheckboxOption
-          label="Inventory & Restock"
-          checked={filterData.reports.includes('Inventory & Restock')}
-          onChange={() => handleReportChange('Inventory & Restock')}
+          label="Inactive"
+          checked={filterData.status.includes('Inactive')}
+          onChange={() => handleStatusChange('Inactive')}
         />
       </FilterSection>
 
@@ -129,54 +140,6 @@ const ReportAnalysisFilterBody = ({ filterData, onFilterChange }) => {
             />
           ))}
         </Box>
-      </FilterSection>
-
-      {/* Product Section */}
-      <FilterSection title="Product">
-        <Box
-          component="input"
-          type="text"
-          placeholder="Enter Product"
-          value={filterData.product || ''}
-          onChange={(e) => onFilterChange({ ...filterData, product: e.target.value })}
-          sx={{
-            width: '100%',
-            py: '0.75rem',
-            px: '1rem',
-            border: '1px solid #d0d0d0',
-            borderRadius: '0.5rem',
-            fontSize: '0.875rem',
-            outline: 'none',
-            '&:focus': {
-              borderColor: '#F8069D',
-              boxShadow: '0 0 0 2px rgba(248, 6, 157, 0.2)',
-            },
-          }}
-        />
-      </FilterSection>
-
-      {/* Category Section */}
-      <FilterSection title="Category">
-        <Box
-          component="input"
-          type="text"
-          placeholder="Enter Category"
-          value={filterData.category || ''}
-          onChange={(e) => onFilterChange({ ...filterData, category: e.target.value })}
-          sx={{
-            width: '100%',
-            py: '0.75rem',
-            px: '1rem',
-            border: '1px solid #d0d0d0',
-            borderRadius: '0.5rem',
-            fontSize: '0.875rem',
-            outline: 'none',
-            '&:focus': {
-              borderColor: '#F8069D',
-              boxShadow: '0 0 0 2px rgba(248, 6, 157, 0.2)',
-            },
-          }}
-        />
       </FilterSection>
 
       {/* Year Section */}
@@ -222,10 +185,6 @@ const ReportAnalysisFilterBody = ({ filterData, onFilterChange }) => {
   );
 };
 
-export default ReportAnalysisFilterBody;
-
-
-
-
+export default TaxRuleFilterBody;
 
 

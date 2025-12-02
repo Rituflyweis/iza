@@ -39,8 +39,6 @@ const OrderManagement = () => {
   const searchValue = useAppSelector((state) => state.search.searchValue);
   const searchRef = useRef('');
   const searchDebounceTimerRef = useRef(null);
-  const abortControllerRef = useRef(null);
-
   // Use custom hook for filters (no search for orders API)
   const {
     filters,
@@ -96,15 +94,6 @@ const OrderManagement = () => {
   );
 
   const fetchOrders = useCallback(async (page = currentPage) => {
-    // Cancel previous request if it exists
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
-
-    // Create new AbortController for this request
-    const abortController = new AbortController();
-    abortControllerRef.current = abortController;
-
     try {
       setLoading(true);
       dispatch(showLoader('Loading orders...'));
@@ -112,13 +101,7 @@ const OrderManagement = () => {
       const params = buildQueryParams(page);
       const response = await axiosInstance.get('/getProductOrder', { 
         params,
-        signal: abortController.signal 
       });
-      
-      // Check if request was aborted
-      if (abortController.signal.aborted) {
-        return;
-      }
       
       const data = response?.data?.data?.docs || response?.data?.docs || [];
       const totalDocs = response?.data?.data?.totalDocs || response?.data?.totalDocs || 0;
@@ -128,16 +111,6 @@ const OrderManagement = () => {
       setTotalPages(totalPagesCount || 1);
       setCurrentPage(page);
     } catch (error) {
-      // Don't show error for canceled requests
-      if (
-        error.name === 'CanceledError' || 
-        error.code === 'ERR_CANCELED' ||
-        error.message?.toLowerCase().includes('canceled') ||
-        abortController.signal.aborted
-      ) {
-        return;
-      }
-
       const errorMessage =
         error?.response?.data?.message ||
         error?.response?.data?.error ||
@@ -145,11 +118,8 @@ const OrderManagement = () => {
       showError(errorMessage);
       console.error('Error fetching orders:', error);
     } finally {
-      // Only update loading state if request wasn't aborted
-      if (!abortController.signal.aborted) {
-        setLoading(false);
-        dispatch(hideLoader());
-      }
+      setLoading(false);
+      dispatch(hideLoader());
     }
   }, [buildQueryParams, currentPage, dispatch, showError]);
 
@@ -158,11 +128,8 @@ const OrderManagement = () => {
     fetchOrders(1);
     isInitialMount.current = false;
     
-    // Cleanup: cancel any pending requests on unmount
+    // Cleanup: clear debounce timer on unmount
     return () => {
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
       if (searchDebounceTimerRef.current) {
         clearTimeout(searchDebounceTimerRef.current);
       }

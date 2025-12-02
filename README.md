@@ -27,4 +27,6 @@ in transaction detail  which id need to pass not getting data
 download user and transaction 
 ordermanagement 
 /getProductOrder?list=&orderStatus=&search=&fromDate=&toDate=&page=1&limit=50  : in order date, in this filter  can used  only one value  at  a time ,search filter is not working
-api to download invoice 
+api to download invoice in order management
+alert,product  api  have  differnt  base url and in alert need api payment alert ,inactive vendors alert setting  api required
+in add tax country citystate list required

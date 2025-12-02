@@ -15,6 +15,7 @@ const LoginForm = () => {
   const dispatch = useAppDispatch();
   const { showSuccess, showError } = useToast();
   const [showPassword, setShowPassword] = useState(false);
+  const [submitAttempted, setSubmitAttempted] = useState(false);
   const isSubmittingRef = useRef(false);
 
   const formik = useFormik({
@@ -26,56 +27,63 @@ const LoginForm = () => {
     validationSchema: loginSchema,
     validateOnBlur: true,
     validateOnChange: true,
-    onSubmit: async (values, { setSubmitting }) => {
-      // Prevent double submission
-      if (isSubmittingRef.current) {
+
+    onSubmit: async (values, { setSubmitting, setTouched, validateForm }) => {
+      // Mark that form submission was attempted
+      setSubmitAttempted(true);
+
+      // Mark all fields as touched FIRST so errors will display
+      setTouched({
+        email: true,
+        password: true,
+      });
+
+      // Then validate the form
+      const validationErrors = await validateForm();
+
+      // Stop if validation fails
+      if (Object.keys(validationErrors).length > 0) {
+        setSubmitting(false);
         return;
       }
 
+      // Prevent double submission
+      if (isSubmittingRef.current) return;
       isSubmittingRef.current = true;
       setSubmitting(true);
 
       try {
         dispatch(showLoader('Logging in...'));
 
-        const requestBody = {
+        const response = await axiosInstance.post('/signin', {
           email: values.email,
           password: values.password,
-        };
+        });
 
-        const response = await axiosInstance.post('/signin', requestBody);
-
-        // Extract token and user data from response
         const { accessToken, data } = response.data;
-        const authToken = accessToken;
-        const userData = data;
 
-        // Store credentials in Redux
         dispatch(
           setCredentials({
-            token: authToken,
-            user: userData,
+            token: accessToken,
+            user: data,
           })
         );
 
-        // Store rememberMe preference
         if (values.rememberMe) {
-          localStorage.setItem("token", authToken);
+          localStorage.setItem('token', accessToken);
         } else {
-          sessionStorage.setItem("token", authToken);
+          sessionStorage.setItem('token', accessToken);
         }
 
         showSuccess('Login successful!');
 
-        // Navigate to dashboard
-        setTimeout(() => {
-          navigate('/dashboard');
-        }, 500);
+        setTimeout(() => navigate('/dashboard'), 500);
       } catch (error) {
         const errorMessage =
           error.response?.data?.message ||
           error.response?.data?.error ||
           'Login failed. Please check your credentials.';
+
         showError(errorMessage);
         dispatch(setError(errorMessage));
       } finally {
@@ -97,44 +105,34 @@ const LoginForm = () => {
     dirty,
   } = formik;
 
-  const handleSignUp = () => {
-    navigate('/signup');
-  };
-
-  const handleForgotPassword = () => {
-    navigate('/forgot-password');
-  };
-
   return (
     <form onSubmit={handleSubmit} className="w-full">
-      <Typography
-        variant="h4"
-        className="text-gray-800 font-extrabold text-[2rem] mb-2"
-      >
+      <Typography variant="h4" className="text-gray-800 font-extrabold text-[2rem] mb-2">
         Welcome back!
       </Typography>
-      <Typography
-        variant="body1"
-        className="text-gray-600 text-sm mb-8"
-      >
-        Welcome back! please Login in to your account
+      <Typography variant="body1" className="text-gray-600 text-sm mb-8">
+        Welcome back! Please log in to your account
       </Typography>
 
+      {/* Email */}
       <CustomInput
         label="Email"
         type="email"
         placeholder="Enter email"
         {...getFieldProps('email')}
-        error={touched.email && errors.email}
+        touched={touched.email || submitAttempted}
+        error={(touched.email || submitAttempted) && errors.email ? errors.email : ''}
         required
       />
 
+      {/* Password */}
       <CustomInput
         label="Password"
-        placeholder="Enter Password"
+        placeholder="Enter password"
         type={showPassword ? 'text' : 'password'}
         {...getFieldProps('password')}
-        error={touched.password && errors.password}
+        touched={touched.password || submitAttempted}
+        error={(touched.password || submitAttempted) && errors.password ? errors.password : ''}
         required
         showPasswordToggle
         showPassword={showPassword}
@@ -147,29 +145,19 @@ const LoginForm = () => {
             <Checkbox
               {...getFieldProps('rememberMe')}
               checked={values.rememberMe}
-              className="text-gray-500"
               sx={{
-                '&.Mui-checked': {
-                  color: '#F8069D',
-                },
-                '& .MuiSvgIcon-root': {
-                  fontSize: '1.25rem',
-                  borderRadius: '0.25rem',
-                },
+                '&.Mui-checked': { color: '#F8069D' },
+                '& .MuiSvgIcon-root': { fontSize: '1.25rem' },
               }}
             />
           }
-          label={
-            <span className="text-sm font-semibold text-gray-700">
-              Remember me
-            </span>
-          }
+          label={<span className="text-sm font-semibold text-gray-700">Remember me</span>}
         />
+
         <Link
           component="button"
-          type="button"
-          onClick={handleForgotPassword}
-          className="hover:underline cursor-pointer no-underline text-sm font-semibold text-[#F8069D] hover:text-[#C1057D]"
+          onClick={() => navigate('/forgot-password')}
+          className="text-sm font-semibold text-[#F8069D] hover:text-[#C1057D] no-underline hover:underline cursor-pointer"
         >
           Forgot Password?
         </Link>
@@ -177,25 +165,18 @@ const LoginForm = () => {
 
       <Button
         type="submit"
-        variant="contained"
         fullWidth
-        disabled={!isValid || !dirty || isSubmitting}
+        variant="contained"
+        disabled={isSubmitting}
         sx={{
           backgroundColor: '#F8069D',
           color: '#FFFFFF',
           textTransform: 'none',
           padding: '0.875rem',
           borderRadius: '0.625rem',
-          fontSize: '1rem',
           fontWeight: 600,
-          '&:hover': {
-            backgroundColor: '#C1057D',
-          },
-          '&:disabled': {
-            backgroundColor: '#F8069D',
-            opacity: 0.5,
-            color: '#FFFFFF',
-          },
+          '&:hover': { backgroundColor: '#C1057D' },
+          '&:disabled': { backgroundColor: '#F8069D', opacity: 0.5 },
           mb: '0.75rem',
         }}
       >
@@ -203,24 +184,17 @@ const LoginForm = () => {
       </Button>
 
       <Button
-        variant="outlined"
         fullWidth
-        onClick={handleSignUp}
+        variant="outlined"
+        onClick={() => navigate('/signup')}
         sx={{
-          border: '2px solid #F8069D',
           borderColor: '#F8069D',
           color: '#F8069D',
-          backgroundColor: '#FFFFFF',
           textTransform: 'none',
           padding: '0.875rem',
           borderRadius: '0.625rem',
-          fontSize: '1rem',
           fontWeight: 600,
-          '&:hover': {
-            borderColor: '#F8069D',
-            backgroundColor: 'rgba(248, 6, 157, 0.05)',
-            color: '#F8069D',
-          },
+          '&:hover': { backgroundColor: 'rgba(248, 6, 157, 0.05)' },
         }}
       >
         Sign Up

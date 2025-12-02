@@ -8,6 +8,7 @@ console.log("🔧 VITE_API_BASE_URL value:", import.meta.env.VITE_API_BASE_URL);
 console.log("🔧 Axios will use base URL:", NORMALIZED_BASE_URL);
 
 const axiosInstance = axios.create({
+  // baseURL:"https://iza-backend.vercel.app/api/v1/",
   baseURL: NORMALIZED_BASE_URL,
   headers: {
     "Content-Type": "application/json",
@@ -24,6 +25,7 @@ axiosInstance.interceptors.request.use((config) => {
 
   // Ensure every request always uses the configured base URL
   config.baseURL = NORMALIZED_BASE_URL;
+    // config.baseURL = "https://iza-backend.vercel.app/api/v1/";
   config.url = (config.url || "").replace(/^\/+/, "");
 
   // Log request details for debugging
